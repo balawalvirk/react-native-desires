@@ -1,7 +1,14 @@
 import React from 'react';
-import {ImageBackground, Pressable, StyleSheet, View} from 'react-native';
+import {
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Touchable,
+  View,
+} from 'react-native';
 import {
   appFonts,
+  appIcons,
   appImages,
   colors,
   fontSizes,
@@ -16,6 +23,7 @@ import {withDecay} from 'react-native-reanimated';
 import {LinearGradient} from 'react-native-linear-gradient';
 import {Wrapper, Spacer} from '..';
 import {scale, verticalScale} from 'react-native-size-matters';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export function IconTitleArrow({
   iconImage,
@@ -87,7 +95,16 @@ export function IconTitleArrow({
   );
 }
 
-export function Profile({isVip, isGold, isStandard}) {
+export function Profile({
+  isVip,
+  isGold,
+  isStandard,
+  CardImage,
+  DeckSwiper,
+  onPressHot,
+  onPressNot,
+  onPress,
+}) {
   const styles = StyleSheet.create({
     backgroundLayer: {
       overflow: 'hidden',
@@ -103,7 +120,7 @@ export function Profile({isVip, isGold, isStandard}) {
       borderRadius: responsiveWidth(5),
       //backgroundColor: 'red',
       //overflow: 'hidden',
-      borderWidth: 2,
+      // borderWidth: 2,
     },
     ProfileLabel: {
       height: sizes.doubleBaseMargin,
@@ -138,106 +155,162 @@ export function Profile({isVip, isGold, isStandard}) {
   });
   return (
     <Wrapper style={styles.backgroundLayer}>
-      <Wrapper
-        style={[
-          styles.mainContainer,
-          isGold && {borderColor: colors.GoldLabelBackground},
-          isVip && {borderColor: colors.appPrimaryColor},
-          isStandard && {borderWidth: 0},
-        ]}>
-        <ImageBackground
-          source={appImages.image2}
-          style={styles.BackgroundImageStyle}>
-          <LinearGradient
-            colors={['rgba(34, 24, 49, 0)', 'rgba(27, 36, 49, 0.85)']} // Adjust the colors as needed
-            start={{x: 0, y: 0}} // Start from the top
-            end={{x: 0, y: 1}} // End at the bottom
-            style={{flex: 1, justifyContent: 'flex-end'}}>
-            <Wrapper
-              marginHorizontalBase
-              justifyContentCenter
-              //paddingVerticalTiny
-              //backgroundColor={'red'}
-              style={{height: responsiveHeight(13)}}>
-              {/* Profile Details */}
-              <Wrapper>
-                <Text isTinyTitle isWhite children={'Kaiya Baptista, 27'} />
-                <Spacer isTiny />
-                <Text isRegular isWhite children={'Las Vegas, NV'} />
-                <Spacer height={responsiveHeight(1.5)} />
-                <Wrapper flexDirectionRow gap={responsiveWidth(2)}>
-                  {['Soccer Group', 'Traveling'].map((item, index) => (
-                    <Wrapper
-                      key={index}
-                      paddingVerticalTiny
-                      paddingHorizontalSmall
-                      backgroundColor={colors.appBgColor1}
-                      style={{borderRadius: responsiveWidth(2)}}>
-                      <Text isTiny children={item} />
-                    </Wrapper>
-                  ))}
-                </Wrapper>
-                <Spacer height={verticalScale(10)} />
-              </Wrapper>
-              {/* Location Btn */}
+      <Pressable
+        onPress={() => {
+          onPress && onPress();
+        }}>
+        <Wrapper
+          style={[
+            styles.mainContainer,
+            isGold && {borderColor: colors.GoldLabelBackground, borderWidth: 2},
+            isVip && {borderColor: colors.appPrimaryColor, borderWidth: 2},
+            isStandard && {borderWidth: 0},
+          ]}>
+          <ImageBackground
+            source={CardImage ? CardImage : appImages.image2}
+            style={[
+              styles.BackgroundImageStyle,
+              DeckSwiper && {height: verticalScale(420)},
+            ]}>
+            <LinearGradient
+              colors={['rgba(34, 24, 49, 0)', 'rgba(27, 36, 49, 0.85)']} // Adjust the colors as needed
+              start={{x: 0, y: 0}} // Start from the top
+              end={{x: 0, y: 1}} // End at the bottom
+              style={{flex: 1, justifyContent: 'flex-end'}}>
               <Wrapper
-                paddingHorizontalTiny
-                paddingVerticalTiny
-                style={styles.LocationMainContainer}>
-                <Icons.WithText
-                  iconName={'location-outline'}
-                  iconType={'ionicon'}
-                  iconSize={responsiveWidth(3.5)}
-                  text={'2 km'}
-                  tintColor={colors.appTextColor6}
-                  textStyle={{
-                    fontSize: fontSizes.small,
-                    fontFamily: appFonts.appTextMedium,
-                    color: colors.appTextColor6,
+                marginHorizontalBase
+                justifyContentCenter
+                //paddingVerticalTiny
+                //backgroundColor={'red'}
+                style={{height: responsiveHeight(13)}}>
+                {/* Profile Details */}
+                <Wrapper>
+                  <Text isTinyTitle isWhite children={'Kaiya Baptista, 27'} />
+                  <Spacer isTiny />
+                  <Text isRegular isWhite children={'Las Vegas, NV'} />
+                  <Spacer height={responsiveHeight(1.5)} />
+                  <Wrapper flexDirectionRow gap={responsiveWidth(2)}>
+                    {['Soccer Group', 'Traveling'].map((item, index) => (
+                      <Wrapper
+                        key={index}
+                        paddingVerticalTiny
+                        paddingHorizontalSmall
+                        backgroundColor={colors.appBgColor1}
+                        style={{borderRadius: responsiveWidth(2)}}>
+                        <Text isTiny children={item} />
+                      </Wrapper>
+                    ))}
+                  </Wrapper>
+                  <Spacer height={verticalScale(10)} />
+                </Wrapper>
+                {/* Location Btn */}
+                <Wrapper
+                  paddingHorizontalTiny
+                  paddingVerticalTiny
+                  style={styles.LocationMainContainer}>
+                  <Icons.WithText
+                    iconName={'location-outline'}
+                    iconType={'ionicon'}
+                    iconSize={responsiveWidth(3.5)}
+                    text={'2 km'}
+                    tintColor={colors.appTextColor6}
+                    textStyle={{
+                      fontSize: fontSizes.small,
+                      fontFamily: appFonts.appTextMedium,
+                      color: colors.appTextColor6,
+                    }}
+                  />
+                </Wrapper>
+              </Wrapper>
+              {/* the Dreck Swip card Buttons  */}
+              {DeckSwiper ? (
+                <Wrapper
+                  paddingVerticalBase
+                  marginHorizontalBase
+                  //backgroundColor={'green'}
+                  flexDirectionRow
+                  justifyContentSpaceBetween
+                  alignItemsCenter>
+                  <Icons.Button
+                    customIcon={appIcons.Hot}
+                    iconSize={scale(30)}
+                    buttonStyle={{
+                      borderRadius: responsiveWidth(100),
+                      height: scale(59),
+                      width: scale(59),
+                      backgroundColor: colors.appPrimaryColor,
+                    }}
+                    onPress={() => {
+                      onPressHot();
+                    }}
+                  />
+                  <Icons.Button
+                    iconName={'exclamationcircleo'}
+                    iconType={'antdesign'}
+                    iconSize={scale(24)}
+                    buttonColor={colors.transparent}
+                    iconColor={colors.appBgColor1}
+                  />
+                  <Icons.Button
+                    iconName={'close-outline'}
+                    iconType={'ionicon'}
+                    iconColor={colors.appBGColor}
+                    iconSize={scale(30)}
+                    buttonStyle={{
+                      borderRadius: responsiveWidth(100),
+                      height: scale(59),
+                      width: scale(59),
+                      backgroundColor: colors.appBgColor1,
+                    }}
+                    onPress={() => {
+                      onPressNot();
+                    }}
+                  />
+                </Wrapper>
+              ) : null}
+            </LinearGradient>
+          </ImageBackground>
+          {/* Label */}
+          {isVip || isGold || isStandard ? (
+            <Wrapper
+              isCenter
+              style={[
+                styles.ProfileLabel,
+                isGold && {backgroundColor: colors.GoldLabelBackground},
+                isStandard && {backgroundColor: colors.appBGColor},
+              ]}>
+              <Text
+                alignTextCenter
+                isRegular
+                isBoldFont
+                isPrimaryColor={isVip}
+                isWhite={!isVip}
+                children={isVip ? 'VIP' : isGold ? 'Gold' : 'Standrad'}
+              />
+            </Wrapper>
+          ) : null}
+          {/* Indexing  points*/}
+          <Wrapper
+            isCenter
+            gap={responsiveWidth(1.5)}
+            style={styles.IndexingMainContainer}>
+            {[1, 2, 3, 4, 5].map((item, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    backgroundColor:
+                      item == 1 ? colors.appBgColor1 : colors.cloud,
+                    height: scale(3),
+                    width: scale(3.5),
+                    borderRadius: responsiveWidth(100),
                   }}
                 />
-              </Wrapper>
-            </Wrapper>
-          </LinearGradient>
-        </ImageBackground>
-        {/* Label */}
-        <Wrapper
-          isCenter
-          style={[
-            styles.ProfileLabel,
-            isGold && {backgroundColor: colors.GoldLabelBackground},
-            isStandard && {backgroundColor: colors.appBGColor},
-          ]}>
-          <Text
-            alignTextCenter
-            isRegular
-            isBoldFont
-            isPrimaryColor={isVip}
-            isWhite={!isVip}
-            children={isVip ? 'VIP' : isGold ? 'Gold' : 'Standrad'}
-          />
+              );
+            })}
+          </Wrapper>
         </Wrapper>
-        {/* Indexing  points*/}
-        <Wrapper
-          isCenter
-          gap={responsiveWidth(1.5)}
-          style={styles.IndexingMainContainer}>
-          {[1, 2, 3, 4, 5].map((item, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  backgroundColor:
-                    item == 1 ? colors.appBgColor1 : colors.cloud,
-                  height: scale(3),
-                  width: scale(3.5),
-                  borderRadius: responsiveWidth(100),
-                }}
-              />
-            );
-          })}
-        </Wrapper>
-      </Wrapper>
+      </Pressable>
     </Wrapper>
   );
 }

@@ -1,5 +1,11 @@
 import React, {Component, useEffect, useState} from 'react';
-import {FlatList, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   Wrapper,
   Text,
@@ -15,17 +21,21 @@ import {
   Labels,
   TextInputs,
   Sliders,
-  StatusBars,
 } from '../../../components';
 import {useHooks} from './hooks';
 import {
   appIcons,
+  appImages,
   colors,
   responsiveHeight,
   responsiveWidth,
+  routes,
 } from '../../../services';
-import {withDecay} from 'react-native-reanimated';
-import {Icon} from '@rneui/base';
+import {Card, Icon} from '@rneui/base';
+import {verticalScale} from 'react-native-size-matters';
+import {navigate} from '../../../navigation/rootNavigation';
+
+const {height} = Dimensions.get('window'); // Get the screen height
 
 export default function Home() {
   const {
@@ -33,47 +43,67 @@ export default function Home() {
     HomeTopRightButtonsData,
     FilterModal,
     FilterModalToggle,
+    CardsData,
   } = useHooks();
   const [cardShown, setCardShown] = useState(1);
   const [DataShown, setDataShown] = useState([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDataShown([1]); // Example data, replace with actual data fetching logic
+      setDataShown(CardsData); // Example data, replace with actual data fetching logic
     }, 1000);
 
     return () => clearTimeout(timer); // Cleanup the timer on unmount
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCardShown(() => {
-        if (cardShown >= 3) {
-          return 1;
-        } else {
-          return cardShown + 1;
-        }
-      }); // Example data, replace with actual data fetching logic
-    }, 1500);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setCardShown(() => {
+  //       if (cardShown >= 3) {
+  //         return 1;
+  //       } else {
+  //         return cardShown + 1;
+  //       }
+  //     }); // Example data, replace with actual data fetching logic
+  //   }, 1500);
 
-    return () => clearTimeout(timer); // Cleanup the timer on unmount
-  }, [DataShown, cardShown]);
+  //   return () => clearTimeout(timer); // Cleanup the timer on unmount
+  // }, [DataShown, cardShown]);
 
   return (
     <Wrapper isMain>
       <Headers.Common RightButtons={HomeTopRightButtonsData} />
       <FlatList
         data={DataShown}
-        renderItem={(item, index) => (
-          <Wrapper key={index} isCenter paddingVerticalBase>
-            <Cards.Profile
-              isVip={cardShown == 1}
-              isGold={cardShown == 2}
-              isStandard={cardShown == 3}
-            />
-          </Wrapper>
-        )}
+        renderItem={({item, index}) => {
+          return (
+            <Wrapper
+              key={index}
+              isCenter
+              //backgroundColor={index == 1 ? 'red' : 'blue'}
+              //style={{height: verticalScale(505)}}
+            >
+              <Cards.Profile
+                CardImage={item?.image}
+                isVip={item?.isVip}
+                isGold={item?.isGold}
+                isStandard={item?.isStandard}
+                onPress={() => {
+                  navigate(routes.userProfile, {visiterProfile: true});
+                }}
+              />
+            </Wrapper>
+          );
+        }}
+        ItemSeparatorComponent={<Spacer isMedium />}
+        ListFooterComponent={<Spacer height={responsiveHeight(10)} />}
         ListEmptyComponent={renderEmptyList}
+        contentContainerStyle={styles.flatListContent}
+        //snapToAlignment="center" // Ensures the list snaps to the center of each item
+        // decelerationRate="fast" // Makes the scroll deceleration smooth
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) => index.toString()}
+        //snapToInterval={verticalScale(505)}
       />
       {/* Modal of Filter */}
       <Modals.PopupPrimary
@@ -156,3 +186,17 @@ export default function Home() {
     </Wrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  flatListContent: {
+    flexGrow: 1,
+    //height: responsiveHeight(90),
+    justifyContent: 'center', // Centers items vertically inside the FlatList
+    alignItems: 'center', // Ensures items are centered horizontally
+  },
+  centeredItemWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1, // Ensures item takes full height to be centered
+  },
+});

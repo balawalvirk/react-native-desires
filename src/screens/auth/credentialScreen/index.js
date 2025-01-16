@@ -17,6 +17,8 @@ import {
   sizes,
 } from '../../../services';
 import {CreateAccount, Signin} from '../index';
+import LinearGradient from 'react-native-linear-gradient';
+import {BlurView} from '@react-native-community/blur';
 
 export default function Index() {
   const {CurrentPage, handleCurrentPage} = useHooks();

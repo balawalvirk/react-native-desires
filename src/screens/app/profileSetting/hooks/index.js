@@ -1,11 +1,5 @@
 import React, {useMemo, useState} from 'react';
-import {
-  Images,
-  Spacer,
-  StatusBars,
-  Text,
-  Wrapper,
-} from '../../../../components';
+import {Images, Spacer, Text, Wrapper} from '../../../../components';
 import {
   appIcons,
   appImages,
@@ -20,9 +14,14 @@ import {navigate} from '../../../../navigation/rootNavigation';
 
 export function useHooks() {
   const [LocationModalVisible, setLocationModalVisible] = useState(false);
+  const [EditProfileModalVisible, setEditProfileModalVisible] = useState(false);
 
   const handleToggleLocationModal = () => {
     setLocationModalVisible(!LocationModalVisible);
+  };
+
+  const handleToggleEditProfileModal = () => {
+    setEditProfileModalVisible(!EditProfileModalVisible);
   };
 
   const HeaderComponent = React.memo(() => {
@@ -48,7 +47,7 @@ export function useHooks() {
           Ethan Blake, 25
         </Text>
         <Spacer isTiny />
-        <Text isRegular alignTextCenter style={{color: colors.appBorderColor1}}>
+        <Text isRegular style={{color: colors.appBorderColor1}} alignTextCenter>
           2177 Marigold Lane, United States
         </Text>
         <Spacer isBasic />
@@ -58,11 +57,17 @@ export function useHooks() {
 
   const menuItems = useMemo(
     () => [
-      {customIcon: appIcons.user, title: 'Edit Profile'},
+      {
+        customIcon: appIcons.user,
+        title: 'Edit Profile',
+        onPress: handleToggleEditProfileModal,
+      },
       {
         customIcon: appIcons.Location,
         title: 'Place of Residence',
-        onPress: handleToggleLocationModal,
+        onPress: () => {
+          handleToggleLocationModal();
+        },
       },
       {
         customIcon: appIcons.Search,
@@ -78,7 +83,13 @@ export function useHooks() {
           navigate(routes.buyCoins);
         },
       },
-      {customIcon: appIcons.DollarCircle, title: 'Coin Wallet'},
+      {
+        customIcon: appIcons.DollarCircle,
+        title: 'Coin Wallet',
+        onPress: () => {
+          navigate(routes.myCredit);
+        },
+      },
       {
         customIcon: appIcons.wallet,
         title: 'Subscription',
@@ -118,5 +129,7 @@ export function useHooks() {
     menuItems,
     LocationModalVisible,
     handleToggleLocationModal,
+    EditProfileModalVisible,
+    handleToggleEditProfileModal,
   };
 }

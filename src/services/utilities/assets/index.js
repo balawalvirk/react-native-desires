@@ -22,6 +22,9 @@ const appImages = {
   SplashBackgroundImage: require('../../../assets/images/SplashBackgroundImage.png'),
   profile: require('../../../assets/images/profile.png'),
   image2: require('../../../assets/images/image2.jpeg'),
+  image3: require('../../../assets/images/image3.jpeg'),
+  image4: require('../../../assets/images/image4.jpeg'),
+  verificationImage: require('../../../assets/images/image4.jpeg'),
 };
 
 const appIcons = {
@@ -56,9 +59,16 @@ const appIcons = {
   Tick: require('../../../assets/icons/Tick.png'),
   TickCircle: require('../../../assets/icons/TickCircle.png'),
   LocationHistory: require('../../../assets/icons/LocationHistory.png'),
+  LocationLogo: require('../../../assets/icons/locationLogo.png'),
+  LocationLogo1: require('../../../assets/icons/locationLogo1.png'),
+  LocationMessageContainer: require('../../../assets/icons/locationMessageContainer.png'),
+  Heart: require('../../../assets/icons/Heart.png'),
   //pay
   BTC: require('../../../assets/icons/btc.png'),
-
+  // Hot or Not
+  Hot: require('../../../assets/icons/Hot.png'),
+  NotLiked: require('../../../assets/icons/NotLiked.png'),
+  HotLiked: require('../../../assets/icons/HotLiked.png'),
   //Position
   PositionBackground: require('../../../assets/icons/PositionBackground.png'),
   //ProfileSetting
@@ -72,8 +82,25 @@ const appIcons = {
   dataSets: require('../../../assets/icons/dataSets.png'),
   //Home Page
   sendIcon: require('../../../assets/icons/Send.png'),
+  sendMessage: require('../../../assets/icons/SendMessage.png'),
   filterIcon: require('../../../assets/icons/Filter.png'),
   EmptyListHome: require('../../../assets/icons/EmptyListHome.png'),
+  EmptyListHotorNot: require('../../../assets/icons/EmptyListHotorNot.png'),
+  // Friends
+  Menu: require('../../../assets/icons/Menu.png'),
+  camera: require('../../../assets/icons/Camera.png'),
+  video: require('../../../assets/icons/Video.png'),
+  VideoOff: require('../../../assets/icons/VideoOff.png'),
+  FullScreenExit: require('../../../assets/icons/FullScreenExit.png'),
+  callEnd: require('../../../assets/icons/callEnd.png'),
+  flipCamera: require('../../../assets/icons/flip-camera.png'),
+  EditPen: require('../../../assets/icons/Edit.png'),
+  UploadImage: require('../../../assets/icons/UploadImage.png'),
+  inviteQrCode: require('../../../assets/icons/inviteQrCode.png'),
+  //
+  applogo: require('../../../assets/icons/logo.png'),
+  Calender: require('../../../assets/icons/Calender.png'),
+  phoneInput: require('../../../assets/icons/phoneInput.png'),
 };
 
 const appFonts = {

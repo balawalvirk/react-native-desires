@@ -7,6 +7,10 @@ export function useHooks() {
   const [InputFocused, setInputFocused] = useState('');
   const [accepted, setAccepted] = useState(false);
   const [automatedMessage, setAutomatedMessage] = useState(false);
+  const [uploadImageModal, setUploadImageModal] = useState(false);
+  const [personalInfoModal, setpersonInfoModal] = useState(false);
+  const [smsAuthModal, setSmsAuthModal] = useState(false);
+  const [smsAuthOTPModal, setSmsAuthOTPModal] = useState(false);
 
   function handleInputFocused({FocusedOn}) {
     setInputFocused(FocusedOn);
@@ -16,6 +20,18 @@ export function useHooks() {
   }
   function handleAutomatedMessage() {
     setAutomatedMessage(!automatedMessage);
+  }
+  function handleToggleUploadImageModal() {
+    setUploadImageModal(!uploadImageModal);
+  }
+  function handleTogglePersonInfoModal() {
+    setpersonInfoModal(!personalInfoModal);
+  }
+  function handleToggleSmsAuthModal() {
+    setSmsAuthModal(!smsAuthModal);
+  }
+  function handleToggleSmsAuthOTPModal() {
+    setSmsAuthOTPModal(!smsAuthOTPModal);
   }
 
   function handleSecurePassword({num}) {
@@ -55,6 +71,29 @@ export function useHooks() {
     ],
     [],
   );
+  const GenderData = useMemo(
+    () => [
+      {
+        iconName: 'male-outline',
+        iconType: 'ionicon',
+        iconColor: colors.black,
+        Title: 'Male',
+      },
+      {
+        iconName: 'female-outline',
+        iconType: 'ionicon',
+        iconColor: colors.facebook,
+        Title: 'Female',
+      },
+      {
+        iconName: 'transgender-outline',
+        iconType: 'ionicon',
+        iconColor: colors.facebook,
+        Title: 'Trans',
+      },
+    ],
+    [],
+  );
 
   return {
     InputFocused,
@@ -63,10 +102,21 @@ export function useHooks() {
     automatedMessage,
     accepted,
     LoginIconsData,
+    GenderData,
+    //modals
+    personalInfoModal,
+    smsAuthModal,
+    smsAuthOTPModal,
+    uploadImageModal,
     //functions
     handleInputFocused,
     handleAccepted,
     handleAutomatedMessage,
     handleSecurePassword,
+    //modalfunctions
+    handleTogglePersonInfoModal,
+    handleToggleSmsAuthModal,
+    handleToggleSmsAuthOTPModal,
+    handleToggleUploadImageModal,
   };
 }

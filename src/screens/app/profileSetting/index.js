@@ -28,9 +28,10 @@ export default function Index() {
     menuItems,
     LocationModalVisible,
     handleToggleLocationModal,
+    EditProfileModalVisible,
+    handleToggleEditProfileModal,
   } = useHooks();
 
-  const [Location, setLocation] = useState('');
   // RenderItem component
   const RenderItem = React.memo(
     ({Icon, Title, tintColor, onPress}) => {
@@ -77,7 +78,8 @@ export default function Index() {
   // Main render
   return (
     <Wrapper isMain>
-      <StatusBars.Light StatusBarsColor={colors.appBGColor} />
+      <StatusBars.Light backgroundColor={colors.appBGColor} />
+      <Spacer isStatusBarHeigt />
       <FlatList
         data={menuItems}
         ListHeaderComponent={<HeaderComponent />}
@@ -105,6 +107,10 @@ export default function Index() {
       <Modals.PlacesAutocomplete
         visible={LocationModalVisible}
         toggle={handleToggleLocationModal}
+      />
+      <Modals.EditProfile
+        visible={EditProfileModalVisible}
+        toggle={handleToggleEditProfileModal}
       />
     </Wrapper>
   );

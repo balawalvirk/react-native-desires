@@ -50,8 +50,8 @@ export function ModalLabelWithCross({Title, Description, onPress}) {
         <Text
           isTinyTitle
           style={{
-            //backgroundColor: 'red',
-            width: responsiveWidth(50),
+            // backgroundColor: 'red',
+            width: responsiveWidth(70),
           }}
           children={Title}
         />

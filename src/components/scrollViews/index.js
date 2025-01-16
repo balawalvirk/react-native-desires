@@ -68,7 +68,7 @@ export const HorizontalScrollWithDots = ({Data, RenderItem}) => {
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 10,
-      backgroundColor: 'red',
+      //backgroundColor: 'red',
     },
     dot: {
       height: scale(8),

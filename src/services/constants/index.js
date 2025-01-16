@@ -31,6 +31,13 @@ export const routes = {
   postDetail: 'postDetail',
   chat: 'chat',
   profileSetting: 'profileSetting',
+  //Friends
+  friendRequests: 'friendRequests',
+  requestSent: 'requestSent',
+  blockedUser: 'blockedUser',
+  audioCall: 'audioCall',
+  videoCall: 'videoCall',
+  chatScreen: 'chatScreen',
 
   position: 'position',
   mySearch: 'mySearch',
@@ -39,7 +46,13 @@ export const routes = {
   support: 'support',
   subscription: 'subscription',
   appSetting: 'appSetting',
-
+  userProfile: 'userProfile',
+  InComingRequest: 'InComingRequest',
+  revoke: 'revoke',
+  //
+  myCredit: 'myCredit',
+  inviteFriends: 'inviteFriends',
+  verifyProfile: 'verifyProfile',
   //common
   termsOfService: 'termsOfService',
   privacyPolicy: 'privacyPolicy',

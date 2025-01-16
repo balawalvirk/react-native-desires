@@ -26,6 +26,7 @@ import * as Sliders from './sliders';
 import * as BarButtons from './barButtons';
 import * as DropDowns from './dropdowns';
 import * as Swipeables from './swipeables';
+import PhoneNumberInput from './phoneInput';
 
 export {
   Wrapper,
@@ -55,4 +56,5 @@ export {
   BarButtons,
   DropDowns,
   Swipeables,
+  PhoneNumberInput,
 };

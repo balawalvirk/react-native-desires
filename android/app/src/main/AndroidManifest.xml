@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- To use the camera i added this  -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
       android:name=".MainApplication"
@@ -8,8 +11,7 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme"
-      android:supportsRtl="true">
+      android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -22,9 +24,8 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-      <!-- For the Maps i Added this Line  -->
-        <meta-data
+       <meta-data
      android:name="com.google.android.geo.API_KEY"
-     android:value="AIzaSyAyItdXh8Zmxa7iCAyDVPH_UAJ5iUTGtEA"/>
+     android:value="AIzaSyADMSrJ7cO5UoFG_1PwGU3OHwU4v6Ju7eA"/>
     </application>
 </manifest>

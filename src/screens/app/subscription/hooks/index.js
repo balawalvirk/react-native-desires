@@ -1,5 +1,12 @@
 import {useMemo, useState} from 'react';
-import {Icons, Lines, Spacer, Text, Wrapper} from '../../../../components';
+import {
+  Icons,
+  Lines,
+  ScrollViews,
+  Spacer,
+  Text,
+  Wrapper,
+} from '../../../../components';
 import {StyleSheet} from 'react-native';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {
@@ -216,21 +223,23 @@ export function useHooks() {
           </Wrapper>
         </Wrapper>
         <Spacer isDoubleBase />
-        <Wrapper gap={responsiveHeight(1.5)}>
-          {Item?.features.map((label, index) => (
-            <Wrapper
-              key={index}
-              flexDirectionRow
-              marginHorizontalLarge
-              alignItemsCenter
-              justifyContentSpaceBetween>
-              <Text isRegular isRegularFont>
-                {label}
-              </Text>
-              <Icons.Custom icon={appIcons.TickCircle} size={scale(20)} />
-            </Wrapper>
-          ))}
-        </Wrapper>
+        <ScrollViews.KeyboardAvoiding>
+          <Wrapper gap={responsiveHeight(1.5)}>
+            {Item?.features.map((label, index) => (
+              <Wrapper
+                key={index}
+                flexDirectionRow
+                marginHorizontalLarge
+                alignItemsCenter
+                justifyContentSpaceBetween>
+                <Text isRegular isRegularFont>
+                  {label}
+                </Text>
+                <Icons.Custom icon={appIcons.TickCircle} size={scale(20)} />
+              </Wrapper>
+            ))}
+          </Wrapper>
+        </ScrollViews.KeyboardAvoiding>
       </Wrapper>
     );
   };

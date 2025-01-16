@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Wrapper, Text, Logos, Icons} from '../../../components';
+import {Wrapper, Logos} from '../../../components';
 import {
   appImages,
   appStyles,

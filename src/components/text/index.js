@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text} from 'react-native';
-import {appStyles} from '../../services';
+import {appStyles, colors} from '../../services';
 
 export default function ({
   style,
@@ -45,6 +45,7 @@ export default function ({
   return (
     <Text
       style={[
+        {color: colors.appTextColor1},
         //titles
         isXXLTitle && styles.xxlTitleStyle,
         isXLTitle && styles.xlTitleStyle,

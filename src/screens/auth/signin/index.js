@@ -26,9 +26,10 @@ import {
   fontSizes,
   appFonts,
   appStyles,
+  useKeyboardStatus,
 } from '../../../services';
 import {useHooks} from './hooks';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, Keyboard, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon} from '@rneui/base';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {navigate} from '../../../navigation/rootNavigation';
@@ -46,6 +47,7 @@ export default function Index({handleCurrentPage}) {
     handleRememberMe,
     handleForgotPasswordModal,
   } = useHooks();
+  const isKeyboradOpen = useKeyboardStatus();
   return (
     <Wrapper>
       <Wrapper
@@ -64,7 +66,7 @@ export default function Index({handleCurrentPage}) {
         </Wrapper>
         <Spacer isMedium />
         <TextInputs.Bordered
-          placeholder={'Edean@dexxire.com'}
+          placeholder={'dean@dexxire.com'}
           onFocus={value => {
             value && handleInputFocused({FocusedOn: 'Email'});
           }}
@@ -170,8 +172,12 @@ export default function Index({handleCurrentPage}) {
         toggle={handleForgotPasswordModal}
         disableSwipe={true}
         isBlur
+        //onKeyborderOpenHeightDown={responsiveHeight(18)}
         children={
-          <Wrapper style={{height: responsiveHeight(55)}}>
+          <Wrapper
+            style={{
+              height: responsiveHeight(58),
+            }}>
             <Wrapper
               //backgroundColor={'red'}
               alignItemsFlexStart

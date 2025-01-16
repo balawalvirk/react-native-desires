@@ -11,6 +11,19 @@ import BuyCoins from './buyCoins';
 import Support from './support';
 import Subscription from './subscription';
 import AppSetting from './appSetting';
+import RequestSent from './requestSent';
+import BlockedUser from './blockedUser';
+import FriendResquest from './friendRequest';
+import AudioCall from './audioCall';
+import VideoCall from './videoCall';
+import ChatScreen from './chatScreen';
+import UserProfile from './userProfile';
+import InComingRequest from './inComingRequest';
+import Revoke from './revoke';
+// new pages
+import MyCredit from './myCredit';
+import InviteFriends from './inviteFriends';
+import VerifyProfile from './VerifyProfile';
 
 export {
   Home,
@@ -26,4 +39,16 @@ export {
   Support,
   Subscription,
   AppSetting,
+  RequestSent,
+  BlockedUser,
+  FriendResquest,
+  AudioCall,
+  VideoCall,
+  ChatScreen,
+  UserProfile,
+  InComingRequest,
+  Revoke,
+  MyCredit,
+  InviteFriends,
+  VerifyProfile,
 };

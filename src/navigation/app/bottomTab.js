@@ -9,7 +9,7 @@ import {
   tabs,
   useReduxStore,
 } from '../../services';
-import {Images, Spacer, StatusBars, Wrapper} from '../../components';
+import {Icons, Images, Spacer, StatusBars, Wrapper} from '../../components';
 import {Icon} from '@rneui/base';
 import * as App from '../../screens/app';
 import {View} from 'react-native-animatable';
@@ -22,6 +22,7 @@ export default function BottomTabNavigation() {
     return (
       <Wrapper
         alignItemsCenter
+        // backgroundColor={'pink'}
         style={{
           flex: 1,
           // borderTopWidth: 3.5,
@@ -39,8 +40,8 @@ export default function BottomTabNavigation() {
             focused={focused}
           />
         ) : (
-          <Images.Round
-            source={image}
+          <Icons.Custom
+            icon={image}
             size={tabIconSize}
             style={{opacity: focused ? 1 : 0.5}}
           />
@@ -53,16 +54,18 @@ export default function BottomTabNavigation() {
       <BottomTabStack.Navigator
         initialRouteName={routes.home}
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
           ...tabs.tabBarOptions,
           tabBarShowLabel: false,
+          tabBarHideOnKeyboard: true,
+          unmountOnBlur: true,
 
-          header: () => (
-            <View>
-              <StatusBars.Dark />
-              <Spacer isStatusBarHeigt />
-            </View>
-          ),
+          // header: () => (
+          //   <View>
+          //     <StatusBars.Dark />
+          //     <Spacer isStatusBarHeigt />
+          //   </View>
+          // ),
         }}>
         <BottomTabStack.Screen
           name={routes.home}

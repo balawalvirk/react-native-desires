@@ -73,6 +73,7 @@ export const colors = {
   appPrimaryColor: '#C61323',
   appBorderColor1: '#9EA1AE',
   appBorderColor2: '#E8E6EA',
+  appOnlineColor: '#13C634',
 
   //Home page
   GoldLabelBackground: '#DB9501',

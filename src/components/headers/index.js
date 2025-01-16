@@ -17,7 +17,7 @@ import {goBack} from '../../navigation/rootNavigation';
 import * as Icons from '../icons';
 import Wrapper from '../wrapper';
 import Text from '../text';
-import {Pressable} from 'react-native';
+import {Pressable, TouchableOpacity} from 'react-native';
 import Spacer from '../spacer';
 import * as StatusBars from '../statusBars';
 import {Images, Logos} from '..';
@@ -109,7 +109,7 @@ export function Primary({
         <Wrapper
           flex={1.5}
           style={[
-            // { backgroundColor: 'red' },
+            //{backgroundColor: 'red'},
             leftContainerStyle,
           ]}>
           {left ? (
@@ -122,7 +122,7 @@ export function Primary({
                 icon={appIcons.Back}
                 containerStyle={{
                   borderWidth: 1,
-                  padding: responsiveWidth(1.5),
+                  padding: responsiveWidth(2),
                   borderRadius: responsiveWidth(100),
                   borderColor: colors.appBorderColor2,
                 }}
@@ -197,7 +197,16 @@ export function Auth({...PrimaryProps}) {
   );
 }
 
-export function Common({invertColors, shadow, RightButtons, containerStyle}) {
+export function Common({
+  invertColors,
+  shadow,
+  RightButtons,
+  containerStyle,
+  StatusBarsLight,
+  MainBackgroundColor,
+  Title,
+  NoProfile,
+}) {
   const {statusBarHeight, headerHeight} = useSizes();
   const defaultTintColor = !invertColors
     ? colors.appTextColor6
@@ -213,39 +222,42 @@ export function Common({invertColors, shadow, RightButtons, containerStyle}) {
         appStyles.headerStyle,
         {
           //height: headerHeight,
-          backgroundColor: defaultBackgroundColor,
+          backgroundColor: MainBackgroundColor
+            ? MainBackgroundColor
+            : defaultBackgroundColor,
           borderBottomWidth: 0,
           //paddingBottom: responsiveHeight(1),
+          marginTop: sizes.statusBarHeight,
         },
         shadow && appStyles.shadowLight,
         containerStyle,
       ]}>
-      <StatusBars.Dark />
+      {StatusBarsLight ? <StatusBarsLight /> : <StatusBars.Dark />}
       <Wrapper
         flexDirectionRow
         alignItemsCenter
         justifyContentSpaceBetween
-        marginHorizontalBase
-        //backgroundColor={'red'}
-      >
-        <Logos.CustomBlack />
+        // backgroundColor={'red'}
+        marginHorizontalBase>
+        {Title ? <Text isSmallTitle children={Title} /> : <Logos.CustomBlack />}
         <Wrapper //backgroundColor={'blue'}
           alignItemsCenter
           flexDirectionRow>
           {RightButtons
             ? RightButtons.map((item, index) =>
                 item?.profile ? (
-                  <Images.Round
-                    key={index}
-                    source={item?.profile}
-                    size={responsiveWidth(11)}
-                  />
+                  <TouchableOpacity key={index} onPress={item?.onPress}>
+                    <Images.Round
+                      source={item?.profile}
+                      size={responsiveWidth(11)}
+                    />
+                  </TouchableOpacity>
                 ) : (
                   <Icons.Button
                     key={index}
                     showBadge={item?.badgeValue}
                     badgeValue={item?.badgeValue}
-                    badgeStyle={{...appStyles.shadowDark}}
+                    badgeStyle={{...appStyles.shadowExtraDark}}
                     //buttonSize={responsiveWidth(5)}
                     isRound
                     iconSize={responsiveWidth(6)}
@@ -256,14 +268,25 @@ export function Common({invertColors, shadow, RightButtons, containerStyle}) {
                     buttonStyle={[
                       {
                         backgroundColor: colors.appBgColor1,
-                        zIndex: index == 0 ? 9 : index + 1,
+                        zIndex:
+                          index == 0
+                            ? 4
+                            : index + 1 === RightButtons.length
+                            ? 0
+                            : index,
                       },
 
-                      !(RightButtons.length == 1) && {
-                        left:
-                          index == 0
-                            ? responsiveWidth(3.5)
-                            : responsiveWidth(1.5) * index + 1,
+                      !(RightButtons.length == 1) &&
+                        RightButtons.length > 2 && {
+                          left:
+                            index == 0
+                              ? responsiveWidth(3.5)
+                              : index + 1 === RightButtons.length
+                              ? 0
+                              : responsiveWidth(1.5) * index + 1,
+                        },
+                      RightButtons.length == 2 && {
+                        left: index == 0 ? responsiveWidth(2.5) : 0,
                       },
                     ]}
                   />

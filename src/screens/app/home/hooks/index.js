@@ -35,6 +35,9 @@ export function useHooks() {
     },
     {
       profile: appImages.profile,
+      onPress: () => {
+        navigate(routes.userProfile);
+      },
     },
   ]);
 
@@ -63,10 +66,16 @@ export function useHooks() {
     );
   });
 
+  const CardsData = useMemo(() => [
+    {image: appImages.image2, isVip: true},
+    {image: appImages.image3, isGold: true},
+    {image: appImages.image4, isStandard: true},
+  ]);
   return {
     renderEmptyList,
     HomeTopRightButtonsData,
     FilterModal,
     FilterModalToggle,
+    CardsData,
   };
 }

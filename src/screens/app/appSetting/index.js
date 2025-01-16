@@ -1,5 +1,5 @@
-import {View} from 'react-native';
-import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
 import {
   Text,
   BarButtons,
@@ -16,16 +16,17 @@ import {
 } from '../../../components';
 import {
   appIcons,
+  appImages,
   appStyles,
   colors,
   fontSizes,
+  headers,
   responsiveHeight,
   responsiveWidth,
   sizes,
 } from '../../../services';
 import {scale, verticalScale} from 'react-native-size-matters';
-import {useHooks} from './hooks';
-import {color} from '@rneui/base';
+import {Options, useHooks} from './hooks';
 
 export default function Index() {
   const {
@@ -39,6 +40,12 @@ export default function Index() {
     handleTogglePrivacyPolicyModal,
     TermsConditionsModal,
     handleToggleTermsConditionsModal,
+    AppIconsVip,
+    AppIconSealth,
+    handleToggleIconVip,
+    handleToggleIconSealth,
+    IconVipData,
+    IconSealthData,
   } = useHooks();
   return (
     <Wrapper isMain>
@@ -74,6 +81,28 @@ export default function Index() {
           onPress={() => {}}
           right={<Switches.Custom />}
         />
+        <Spacer isBasic />
+        {/* App Icon  */}
+        <Wrapper gap={responsiveHeight(1)}>
+          <TextInputs.Bordered
+            InputLabel={'App Icons'}
+            placeholder={'VIP'}
+            placeholderTextColor={colors.appTextColor2}
+            customIconRight={appIcons.Forward}
+            onPress={() => {
+              handleToggleIconVip();
+            }}
+          />
+          <TextInputs.Bordered
+            //InputLabel={'App Icons'}
+            placeholder={'Stealth Mode'}
+            placeholderTextColor={colors.appTextColor2}
+            customIconRight={appIcons.Forward}
+            onPress={() => {
+              handleToggleIconSealth();
+            }}
+          />
+        </Wrapper>
         <Spacer isBasic />
 
         {/* Notifications  */}
@@ -181,27 +210,28 @@ export default function Index() {
         isBlur
         visible={LanguageModal}
         toggle={handleToggleLocationModal}
-        children={
-          <Wrapper>
-            <Labels.ModalLabelWithCross
-              Title={'Language'}
-              onPress={handleToggleLocationModal}
-            />
-            <Spacer isBasic />
-            <BarButtons.IconWithTextSelectOptions
-              NoColorOfIcon
-              Data={LanguageModalData}
-            />
-            <Spacer height={verticalScale(100)} />
-            <Wrapper paddingVerticalBase>
-              <Buttons.Colored
-                text={'Apply'}
+        mainContainerStyle={{height: responsiveHeight(75)}}
+        containerStyle={{flex: 1}}>
+        <View style={{height: responsiveHeight(74)}}>
+          <ScrollViews.KeyboardAvoiding>
+            <Wrapper>
+              <Labels.ModalLabelWithCross
+                Title={'Language'}
                 onPress={handleToggleLocationModal}
               />
+              <Spacer isBasic />
+              <BarButtons.IconWithTextSelectOptions
+                NoColorOfIcon
+                Data={LanguageModalData}
+              />
             </Wrapper>
-          </Wrapper>
-        }
-      />
+          </ScrollViews.KeyboardAvoiding>
+        </View>
+        <Wrapper style={styles.buttonONtheBottom} paddingVerticalBase>
+          <Buttons.Colored text={'Apply'} onPress={handleToggleLocationModal} />
+        </Wrapper>
+      </Modals.PopupPrimary>
+
       {/* Access Modal */}
       <Modals.PopupPrimary
         isBlur
@@ -239,7 +269,7 @@ export default function Index() {
                 isMedium
                 isMediumFont
                 children={'Delete My Profile'}
-                onPress={handleToggleLocationModal}
+                onPress={handleToggleAccessModal}
               />
             </Wrapper>
           </Wrapper>
@@ -376,6 +406,109 @@ export default function Index() {
           <Spacer isBasic />
         </ScrollViews.KeyboardAvoiding>
       </Modals.PopupPrimary>
+      {/* Vip Mode */}
+      <Modals.PopupPrimary
+        isBlur
+        disableSwipe
+        visible={AppIconsVip}
+        toggle={handleToggleIconVip}
+        mainContainerStyle={{height: responsiveHeight(75)}}
+        containerStyle={{flex: 1}}>
+        <ScrollViews.KeyboardAvoiding>
+          <Wrapper>
+            <Labels.ModalLabelWithCross
+              Title={'App Icons - VIP'}
+              onPress={handleToggleIconVip}
+            />
+          </Wrapper>
+          <Spacer isSmall />
+          <Wrapper marginHorizontalBase>
+            <Text isRegular isRegularFont>
+              As a VIP member, you not only stand out with a larger profile in
+              the Desires app, but also on your smartphone. Only you as a VIP
+              can choose from 2 different icons with a VIP logo.
+            </Text>
+          </Wrapper>
+          <Spacer isSmall />
+          <Wrapper style={{height: responsiveHeight(58.5)}}>
+            {IconVipData.map((item, index) => (
+              <Options
+                key={index}
+                //isRounded
+                title={item?.title}
+                customleftIcon={appIcons.applogo}
+                leftIconColor={item?.leftIconColor}
+                leftColor={item?.leftColor}
+                leftIconSize={scale(20)}
+                description={item?.description}
+                rightText={item?.rightText}
+              />
+            ))}
+          </Wrapper>
+          <Wrapper style={styles.buttonONtheBottom}>
+            <Buttons.Colored text={'Reset'} />
+          </Wrapper>
+        </ScrollViews.KeyboardAvoiding>
+      </Modals.PopupPrimary>
+      {/* Stealth Mode */}
+      <Modals.PopupPrimary
+        isBlur
+        disableSwipe
+        visible={AppIconSealth}
+        toggle={handleToggleIconSealth}
+        mainContainerStyle={{height: responsiveHeight(75)}}
+        containerStyle={{flex: 1}}>
+        <ScrollViews.KeyboardAvoiding>
+          <Wrapper>
+            <Labels.ModalLabelWithCross
+              Title={'App Icons - Sealth Icons'}
+              onPress={handleToggleIconSealth}
+            />
+          </Wrapper>
+          <Spacer isSmall />
+          <Wrapper marginHorizontalBase>
+            <Text isRegular isRegularFont>
+              As a Phantom or Celebrity member you have the opportunity to
+              disguise the Desires app. You can choose from 10 different topics.
+              The app icon changes, as well as the app name. This means you can
+              install Desires completely discreetly on your smartphone.{'\n'}
+              During your Phantom or celebrity membership, all ICONS are free
+              for you.{'\n'}
+              If you are not yet Phantom or Celebrity member, each ICON costs 10
+              Coins.{'\n'}
+            </Text>
+          </Wrapper>
+          <Spacer isSmall />
+          <Wrapper style={{height: responsiveHeight(58.5)}}>
+            {IconSealthData.map((item, index) => (
+              <Options
+                key={index}
+                title={item?.title}
+                leftColor={item?.leftColor}
+                //leftIconSize={scale(55)}
+                description={item?.description}
+                rightText={item?.rightText}
+              />
+            ))}
+          </Wrapper>
+          <Wrapper style={styles.buttonONtheBottom}>
+            <Buttons.Colored text={'Reset'} />
+            <Spacer isSmall />
+          </Wrapper>
+        </ScrollViews.KeyboardAvoiding>
+      </Modals.PopupPrimary>
     </Wrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  buttonONtheBottom: {
+    flex: 1,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingVertical: sizes.smallMargin,
+    marginVertical: sizes.smallMargin,
+  },
+});
