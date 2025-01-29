@@ -1,5 +1,5 @@
-import React, {Component, useState} from 'react';
-import {Pressable, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, { Component, useState } from 'react';
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   Icons,
   Text,
@@ -26,12 +26,16 @@ import {
   appFonts,
   useImagePicker,
 } from '../../../services';
-import {useHooks} from './hooks';
-import {scale, verticalScale} from 'react-native-size-matters';
-import {Icon} from '@rneui/base';
-import {navigate} from '../../../navigation/rootNavigation';
+import { useHooks } from './hooks';
+import { scale, verticalScale } from 'react-native-size-matters';
+import { Icon } from '@rneui/base';
+import { navigate } from '../../../navigation/rootNavigation';
 import OTPTextView from 'react-native-otp-textinput';
-import {Image} from 'react-native-animatable';
+import { Image } from 'react-native-animatable';
+import { height, width, totalSize } from 'react-native-dimension'
+import DeviceInfo from 'react-native-device-info';
+
+const isTablet = DeviceInfo.isTablet();
 
 export default function Index(props) {
   const {
@@ -65,22 +69,32 @@ export default function Index(props) {
         backgroundColor={colors.appBgColor1}
         style={styles.DownMainContainer}>
         <Wrapper marginHorizontalBase>
-          <Text isSmallTitle children={'Sign Up'} />
+          <Text isSmallTitle
+            style={{
+              ...(isTablet && { fontSize: totalSize(3) }), // Applies only if isTablet is true
+            }}
+            children={'Sign Up'} />
           <Spacer isSmall />
           <Text
             isRegular
             isTextColor2
-            style={{}}
+
+            style={{
+              ...(isTablet && { fontSize: totalSize(1.8) }), // Applies only if isTablet is true
+            }}
             children={'Enter your detail below to sign up.'}
           />
         </Wrapper>
         <Spacer isMedium />
         <TextInputs.Bordered
           placeholder={'dean@dexxire.com'}
-          onFocus={value => value && handleInputFocused({FocusedOn: 'Email'})}
+          onFocus={value => value && handleInputFocused({ FocusedOn: 'Email' })}
           isFocusedContainerColor={InputFocused === 'Email' && colors.black}
           customIconRight={appIcons.Email}
-          iconSizeRight={responsiveWidth(6.5)}
+          inputStyle={{
+            ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+          }}
+          iconSizeRight={isTablet ? totalSize(2.2) : responsiveWidth(6.5)}
           iconColorRight={colors.appTextColor1}
         />
         <Spacer isSmall />
@@ -88,15 +102,19 @@ export default function Index(props) {
           placeholder={'Enter Password'}
           secureTextEntry={SecurePassword1}
           onFocus={value =>
-            value && handleInputFocused({FocusedOn: 'Password'})
+            value && handleInputFocused({ FocusedOn: 'Password' })
           }
           isFocusedContainerColor={InputFocused === 'Password' && colors.black}
           iconNameRight={SecurePassword1 ? 'eye-off' : 'eye'}
           iconTypeRight={'feather'}
+          iconSizeRight={isTablet && totalSize(2.2)}
           iconColorRight={colors.appTextColor1}
-          iconStyleRight={{transform: [{rotate: '180deg'}]}}
+          inputStyle={{
+            ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+          }}
+          iconStyleRight={{ transform: [{ rotate: '180deg' }] }}
           onPressIconRight={() => {
-            handleSecurePassword({num: 1});
+            handleSecurePassword({ num: 1 });
           }}
         />
         <Spacer isSmall />
@@ -104,22 +122,29 @@ export default function Index(props) {
           placeholder={'Renter password'}
           secureTextEntry={SecurePassword2}
           onFocus={value =>
-            value && handleInputFocused({FocusedOn: 'Renter password'})
+            value && handleInputFocused({ FocusedOn: 'Renter password' })
           }
           isFocusedContainerColor={
             InputFocused === 'Renter password' && colors.black
           }
           iconNameRight={SecurePassword2 ? 'eye-off' : 'eye'}
           iconTypeRight={'feather'}
+          iconSizeRight={isTablet && totalSize(2.2)}
           iconColorRight={colors.appTextColor1}
-          iconStyleRight={{transform: [{rotate: '180deg'}]}}
+          inputStyle={{
+            ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+          }}
+          iconStyleRight={{ transform: [{ rotate: '180deg' }] }}
           onPressIconRight={() => {
-            handleSecurePassword({num: 2});
+            handleSecurePassword({ num: 2 });
           }}
         />
         <Spacer isBase />
         <Buttons.Colored
           text={'Create account'}
+          textStyle={{
+            ...(isTablet && { fontSize: totalSize(2) }), // Applies only if isTablet is true
+          }}
           onPress={() => {
             handleToggleSmsAuthModal();
           }}
@@ -139,7 +164,7 @@ export default function Index(props) {
             <Icons.Button
               key={index}
               buttonStyle={styles.LoginIconStyling}
-              iconSize={responsiveWidth(6)}
+              iconSize={isTablet ? totalSize(2.7) : responsiveWidth(6)}
               iconName={item?.iconName}
               iconType={item?.iconType}
               customIcon={item?.customIcon}
@@ -165,8 +190,8 @@ export default function Index(props) {
               }
               isCenter
               style={{
-                height: scale(18),
-                width: scale(18),
+                height: isTablet ? totalSize(2) : scale(18),
+                width: isTablet ? totalSize(2) : scale(18),
                 borderRadius: responsiveWidth(1),
                 borderWidth: 1.5,
                 borderColor: colors.appBorderColor1,
@@ -176,13 +201,15 @@ export default function Index(props) {
                 <Icon
                   name="check"
                   type={'feather'}
-                  size={responsiveWidth(3.5)}
+                  size={isTablet ? totalSize(1.6) : responsiveWidth(3.5)}
                   color={colors.appTextColor6}
                 />
               ) : null}
             </Wrapper>
             <Spacer horizontal isSmall />
-            <Text isSmall isTextColor2 TextWidth={responsiveWidth(80)}>
+            <Text isSmall
+              style={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+              isTextColor2 TextWidth={responsiveWidth(80)}>
               'You consent to receive up to 10 automated messages / month. Reply
               "STOP" to opt out, "HELP" for support. Standard rates apply.'
             </Text>
@@ -210,8 +237,8 @@ export default function Index(props) {
               }
               isCenter
               style={{
-                height: scale(18),
-                width: scale(18),
+                height: isTablet ? totalSize(2) : scale(18),
+                width: isTablet ? totalSize(2) : scale(18),
                 borderRadius: responsiveWidth(1),
                 borderWidth: 1.5,
                 borderColor: colors.appBorderColor1,
@@ -221,15 +248,23 @@ export default function Index(props) {
                 <Icon
                   name="check"
                   type={'feather'}
-                  size={responsiveWidth(3.5)}
+                  size={isTablet ? totalSize(1.6) : responsiveWidth(3.5)}
                   color={colors.appTextColor6}
                 />
               ) : null}
             </Wrapper>
             <Spacer horizontal isSmall />
-            <Text isSmall isTextColor2 TextWidth={responsiveWidth(80)}>
+            <Text isSmall isTextColor2 TextWidth={responsiveWidth(80)}
+              style={{
+                ...(isTablet && { fontSize: totalSize(1.4) }), // Applies only if isTablet is true
+              }}
+            >
               By signing up, you agree to our{' '}
-              <Text isPrimaryColor>Privacy Policy, Terms & Conditions</Text>,
+              <Text isPrimaryColor
+                style={{
+                  ...(isTablet && { fontSize: totalSize(1.4) }), // Applies only if isTablet is true
+                }}
+              >Privacy Policy, Terms & Conditions</Text>,
               and marketing terms, which you can revoke anytime.
             </Text>
           </Wrapper>
@@ -251,34 +286,58 @@ export default function Index(props) {
         children={
           <Wrapper
             style={{
-              height: responsiveHeight(58),
+              height: isTablet ? height(43) : responsiveHeight(58),
             }}>
             <Wrapper
               //backgroundColor={'red'}
               alignItemsFlexStart
               marginHorizontalBase
-              style={{width: responsiveWidth(90)}}>
-              <Icons.Back
-                color={colors.black}
-                size={responsiveWidth(5)}
-                onPress={() => {
-                  handleToggleSmsAuthModal();
-                  if (smsAuthOTPModal) {
-                    handleToggleSmsAuthOTPModal();
-                  }
-                }}
-              />
-              <Spacer isBasic />
+              style={{
+                width: isTablet ? width(70) : responsiveWidth(90),
+
+              }}>
+              <Wrapper
+                style={{
+                  width: '100%',
+                  alignItems: isTablet ? 'flex-end' : 'flex-start'
+
+
+                }}>
+                <Icons.Back
+                  color={colors.black}
+                  iconName={isTablet ? 'cross' : "arrow-back"}
+                  iconType={isTablet ? 'entypo' : 'ionicon'}
+                  size={isTablet ? totalSize(3.5) : responsiveWidth(5)}
+                  onPress={() => {
+                    handleToggleSmsAuthModal();
+                    if (smsAuthOTPModal) {
+                      handleToggleSmsAuthOTPModal();
+                    }
+                  }}
+
+                />
+              </Wrapper>
+              {isTablet ? null : <Spacer isBasic />}
+
               <Text isTinyTitle children={'SMS Authentication'} />
               <Spacer isSmall />
-              <Text isRegular isTextColor2>
+              <Text isRegular isTextColor2
+
+                style={{
+                  ...(isTablet && { fontSize: totalSize(1.8) }), // Applies only if isTablet is true
+                }}
+              >
                 Verification{' '}
                 {smsAuthOTPModal ? (
-                  <Text isTextColor2> - Enter the SMS code</Text>
+                  <Text isTextColor2
+                    style={{
+                      ...(isTablet && { fontSize: totalSize(1.8) }), // Applies only if isTablet is true
+                    }}
+                  > - Enter the SMS code</Text>
                 ) : null}
               </Text>
             </Wrapper>
-            <Spacer isDoubleBase />
+            {isTablet ? <Spacer /> : <Spacer isDoubleBase />}
             {smsAuthOTPModal ? (
               <Wrapper marginHorizontalMedium>
                 <OTPTextView
@@ -314,7 +373,16 @@ export default function Index(props) {
             <Spacer isBase />
             {smsAuthOTPModal ? (
               <Wrapper flexDirectionRow alignItemsCenter justifyContentCenter>
-                <Text isRegular isTextColor2 alignTextCenter>
+                <Text isRegular isTextColor2 alignTextCenter
+
+                  style={{
+                    ...(isTablet && {
+                      fontSize: totalSize(1.6),
+                      fontFamily: appFonts.appTextRegular
+                    })
+                  }}
+
+                >
                   Didn’t received a code?{' '}
                 </Text>
                 <TouchableOpacity
@@ -322,7 +390,14 @@ export default function Index(props) {
                     //handleForgotPasswordModal();
                     //handleCurrentPage({PageName: 'Sign Up'});
                   }}>
-                  <Text isPrimaryColor isMediumFont>
+                  <Text isPrimaryColor isMediumFont
+                    style={{
+                      ...(isTablet && {
+                        fontSize: totalSize(1.6),
+                        fontFamily: appFonts.appTextBold
+                      })
+                    }}
+                  >
                     Resend Again
                   </Text>
                 </TouchableOpacity>
@@ -342,22 +417,43 @@ export default function Index(props) {
           <Wrapper
             style={{
               height: responsiveHeight(80),
+              height: isTablet ? height(70) : responsiveHeight(80),
             }}>
             <ScrollViews.KeyboardAvoiding>
               <Wrapper
                 //backgroundColor={'red'}
                 alignItemsFlexStart
                 marginHorizontalBase
-                style={{width: responsiveWidth(90)}}>
-                <Icons.Back
-                  color={colors.black}
-                  size={responsiveWidth(5)}
-                  onPress={handleTogglePersonInfoModal}
-                />
+                style={{ width: isTablet ? width(70) : responsiveWidth(90) }}>
+
+                <Wrapper
+                  style={{
+                    width: '100%',
+                    alignItems: isTablet ? 'flex-end' : 'flex-start'
+
+
+                  }}>
+                  <Icons.Back
+                    color={colors.black}
+                    iconName={isTablet ? 'cross' : "arrow-back"}
+                    iconType={isTablet ? 'entypo' : 'ionicon'}
+                    size={responsiveWidth(5)}
+                    onPress={handleTogglePersonInfoModal}
+                  />
+                </Wrapper>
                 <Spacer isBasic />
-                <Text isTinyTitle children={'Personal Information'} />
+                <Text isTinyTitle
+
+                  children={isTablet?'Personal Info':'Personal Information'} />
                 <Spacer isSmall />
-                <Text isRegular isTextColor2>
+                <Text isRegular isTextColor2
+                  style={{
+                    ...(isTablet && {
+                      fontSize: totalSize(1.6),
+                      fontFamily: appFonts.appTextRegular
+                    })
+                  }}
+                >
                   Enter the following info to complete your profile
                 </Text>
               </Wrapper>
@@ -365,26 +461,32 @@ export default function Index(props) {
               <TextInputs.Bordered
                 placeholder={'User name'}
                 onFocus={value => {
-                  value && handleInputFocused({FocusedOn: 'User Name'});
+                  value && handleInputFocused({ FocusedOn: 'User Name' });
                 }}
                 isFocusedContainerColor={
                   InputFocused === 'User Name' && colors.black
                 }
+                inputStyle={{
+                  ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+                }}
                 customIconRight={appIcons.user}
-                iconSizeRight={responsiveWidth(6.5)}
+                iconSizeRight={isTablet ? totalSize(2.2) : responsiveWidth(6.5)}
                 iconColorRight={colors.appTextColor1}
               />
               <Spacer isSmall />
               <TextInputs.Bordered
                 placeholder={'13 Jan 2025'}
                 onFocus={value => {
-                  value && handleInputFocused({FocusedOn: 'calender'});
+                  value && handleInputFocused({ FocusedOn: 'calender' });
                 }}
                 isFocusedContainerColor={
                   InputFocused === 'calender' && colors.black
                 }
+                inputStyle={{
+                  ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+                }}
                 customIconRight={appIcons.Calender}
-                iconSizeRight={responsiveWidth(6.5)}
+                iconSizeRight={isTablet ? totalSize(2.2) : responsiveWidth(6.5)}
                 iconColorRight={colors.appTextColor1}
               />
               <Spacer isBasic />
@@ -403,7 +505,11 @@ export default function Index(props) {
                 flexDirectionRow
                 alignItemsCenter
                 justifyContentSpaceBetween>
-                <Text isRegular isRegularFont>
+                <Text isRegular isRegularFont
+                      style={{
+                        ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+                      }}
+                >
                   Place of residence
                 </Text>
               </Wrapper>
@@ -411,14 +517,17 @@ export default function Index(props) {
               <TextInputs.Bordered
                 //InputLabel={'Place of residence'}
                 placeholder={'Enter residence'}
+                inputStyle={{
+                  ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+                }}
                 onFocus={value => {
-                  value && handleInputFocused({FocusedOn: 'residence'});
+                  value && handleInputFocused({ FocusedOn: 'residence' });
                 }}
                 isFocusedContainerColor={
                   InputFocused === 'residence' && colors.black
                 }
                 customIconRight={appIcons.Email}
-                iconSizeRight={responsiveWidth(6.5)}
+                iconSizeRight={isTablet ? totalSize(2.2) : responsiveWidth(6.5)}
                 iconColorRight={colors.appTextColor1}
               />
               <Spacer isMedium />
@@ -456,7 +565,7 @@ export default function Index(props) {
                 //backgroundColor={'red'}
                 alignItemsFlexStart
                 marginHorizontalBase
-                style={{width: responsiveWidth(90)}}>
+                style={{ width: responsiveWidth(90) }}>
                 <Icons.Back
                   color={colors.black}
                   size={responsiveWidth(5)}
@@ -481,7 +590,7 @@ export default function Index(props) {
                 flexDirectionRow
                 alignItemsCenter
                 justifyContentSpaceBetween>
-                <Text style={{width: responsiveWidth(73)}}>
+                <Text style={{ width: responsiveWidth(73) }}>
                   Do you want to remain invisible to others?{'\n'}The Ghose mode
                   is perfect for you
                 </Text>
@@ -491,7 +600,7 @@ export default function Index(props) {
                 flex={1}
                 paddingVerticalSmall
                 justifyContentFlexend
-                //backgroundDark
+              //backgroundDark
               >
                 <Buttons.Colored
                   text={'Next'}
@@ -517,8 +626,8 @@ const styles = StyleSheet.create({
     //paddingBottom: responsiveHeight(7),
   },
   LoginIconStyling: {
-    height: scale(40),
-    width: scale(40),
+    height: isTablet ? totalSize(6) : scale(40),
+    width: isTablet ? totalSize(6) : scale(40),
     padding: responsiveWidth(2),
     marginHorizontal: responsiveWidth(2),
     borderRadius: responsiveWidth(100),
@@ -538,18 +647,20 @@ const styles = StyleSheet.create({
 });
 
 const ChoseToCompleteYourProfile = React.memo(
-  ({TotalSelectedValues = 1, Label, ButtonsData}) => {
+  ({ TotalSelectedValues = 1, Label, ButtonsData }) => {
     const [SelectedValues, setSelectedValues] = useState([]);
     return (
       <Wrapper marginHorizontalBase>
         {/* Title */}
         <Wrapper flexDirectionRow alignItemsCenter justifyContentSpaceBetween>
-          <Text isRegular isRegularFont>
+          <Text isRegular isRegularFont
+            style={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+          >
             {Label}
           </Text>
         </Wrapper>
         <Spacer isSmall />
-        <Wrapper flexDirectionRow style={{flexWrap: 'wrap', gap: scale(8)}}>
+        <Wrapper flexDirectionRow style={{ flexWrap: 'wrap', gap: scale(8) }}>
           {ButtonsData.map((item, index) => {
             const isSelected = SelectedValues?.includes(item);
             return (
@@ -609,8 +720,8 @@ const ChoseToCompleteYourProfile = React.memo(
   },
 );
 
-const UploadImage = ({}) => {
-  const {image, openLibrary} = useImagePicker();
+const UploadImage = ({ }) => {
+  const { image, openLibrary } = useImagePicker();
   return (
     <Wrapper>
       <Labels.Normal Label={'Public Pictures'} />
@@ -619,7 +730,7 @@ const UploadImage = ({}) => {
         marginHorizontalBase
         flexDirectionRow
         alignItemsCenter
-        style={{flexWrap: 'wrap', gap: scale(14)}}>
+        style={{ flexWrap: 'wrap', gap: scale(14) }}>
         {image && (
           <Image source={image} style={styles.ImportedImageContainer} />
         )}
@@ -645,7 +756,7 @@ const UploadImage = ({}) => {
         marginHorizontalBase
         flexDirectionRow
         alignItemsCenter
-        style={{flexWrap: 'wrap', gap: scale(14)}}>
+        style={{ flexWrap: 'wrap', gap: scale(14) }}>
         {image && (
           <Image source={image} style={styles.ImportedImageContainer} />
         )}

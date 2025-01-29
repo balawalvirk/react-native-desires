@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   TextInputs,
@@ -28,12 +28,20 @@ import {
   appStyles,
   useKeyboardStatus,
 } from '../../../services';
-import {useHooks} from './hooks';
-import {Image, Keyboard, StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon} from '@rneui/base';
-import {scale, verticalScale} from 'react-native-size-matters';
-import {navigate} from '../../../navigation/rootNavigation';
-export default function Index({handleCurrentPage}) {
+import { useHooks } from './hooks';
+import { Image, Keyboard, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from '@rneui/base';
+import { scale, verticalScale } from 'react-native-size-matters';
+import { navigate } from '../../../navigation/rootNavigation';
+import DeviceInfo from 'react-native-device-info';
+import { DefaultTheme } from '@react-navigation/native';
+import { height, width, totalSize } from 'react-native-dimension'
+
+const isTablet = DeviceInfo?.isTablet()
+console.log("🚀 ~ isTablet:", isTablet)
+
+
+export default function Index({ handleCurrentPage }) {
   const {
     handleLogin,
     SecurePassword,
@@ -48,6 +56,22 @@ export default function Index({handleCurrentPage}) {
     handleForgotPasswordModal,
   } = useHooks();
   const isKeyboradOpen = useKeyboardStatus();
+
+
+  const tabletModelStyle = {
+    height: responsiveHeight(58),
+    borderRadius: totalSize(2),
+    marginHorizontal: width(3),
+    backgroundColor: 'blue'
+
+  }
+
+  const mobileModelStyle = {
+    height: responsiveHeight(58),
+  }
+
+
+
   return (
     <Wrapper>
       <Wrapper
@@ -55,12 +79,16 @@ export default function Index({handleCurrentPage}) {
         backgroundColor={colors.appBgColor1}
         style={styles.DownMainContainer}>
         <Wrapper marginHorizontalBase>
-          <Text isSmallTitle children={'Sign In'} />
+          <Text isSmallTitle children={'Sign In'}
+            style={{ fontSize: isTablet ? totalSize(3) : responsiveFontSize(24) }}
+          />
           <Spacer isSmall />
           <Text
             isRegular
             isTextColor2
-            style={{}}
+            style={{
+              ...(isTablet && { fontSize: totalSize(1.8) }), // Applies only if isTablet is true
+            }}
             children={'Enter your email address and password to login.'}
           />
         </Wrapper>
@@ -68,11 +96,14 @@ export default function Index({handleCurrentPage}) {
         <TextInputs.Bordered
           placeholder={'dean@dexxire.com'}
           onFocus={value => {
-            value && handleInputFocused({FocusedOn: 'Email'});
+            value && handleInputFocused({ FocusedOn: 'Email' });
           }}
           isFocusedContainerColor={InputFocused === 'Email' && colors.black}
           customIconRight={appIcons.Email}
-          iconSizeRight={responsiveWidth(6.5)}
+          inputStyle={{
+            ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+          }}
+          iconSizeRight={isTablet ? totalSize(2.2) : responsiveWidth(6.5)}
           iconColorRight={colors.appTextColor1}
         />
         <Spacer isSmall />
@@ -80,13 +111,17 @@ export default function Index({handleCurrentPage}) {
           placeholder={'Enter Password'}
           secureTextEntry={SecurePassword}
           onFocus={value => {
-            value && handleInputFocused({FocusedOn: 'Password'});
+            value && handleInputFocused({ FocusedOn: 'Password' });
           }}
           isFocusedContainerColor={InputFocused === 'Password' && colors.black}
           iconNameRight={SecurePassword ? 'eye-off' : 'eye'}
           iconTypeRight={'feather'}
+          iconSizeRight={isTablet && totalSize(2.2)}
           iconColorRight={colors.appTextColor1}
-          iconStyleRight={{transform: [{rotate: '180deg'}]}}
+          inputStyle={{
+            ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+          }}
+          iconStyleRight={{ transform: [{ rotate: '180deg' }] }}
           onPressIconRight={() => {
             handleSecurePassword();
           }}
@@ -112,8 +147,8 @@ export default function Index({handleCurrentPage}) {
                 }
                 isCenter
                 style={{
-                  height: scale(18),
-                  width: scale(18),
+                  height: isTablet ? totalSize(2.2) : scale(18),
+                  width: isTablet ? totalSize(2.2) : scale(18),
                   borderRadius: responsiveWidth(1),
                   borderWidth: 1.5,
                   borderColor: colors.appBorderColor1,
@@ -123,23 +158,39 @@ export default function Index({handleCurrentPage}) {
                   <Icon
                     name="check"
                     type={'feather'}
-                    size={responsiveWidth(3.5)}
+                    size={isTablet ? totalSize(1.8) : responsiveWidth(3.5)}
                     color={colors.appTextColor6}
                   />
                 ) : null}
               </Wrapper>
               <Spacer horizontal isSmall />
-              <Text isRegular isTextColor2 children={'Remember me'} />
+              <Text
+                isRegular
+
+                style={{
+                  ...(isTablet && { fontSize: totalSize(1.4) }), // Applies only if isTablet is true
+                }}
+
+                isTextColor2 children={'Remember me'} />
             </Wrapper>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleForgotPasswordModal}>
-            <Text isPrimaryColor isRegular children={'Forgot Password?'} />
+            <Text isPrimaryColor
+              isRegular
+              style={{
+                ...(isTablet && { fontSize: totalSize(1.4) }), // Applies only if isTablet is true
+              }}
+              children={'Forgot Password?'} />
           </TouchableOpacity>
         </Wrapper>
         <Spacer isDoubleBase />
         <Buttons.Colored
           text={'Login'}
+          textStyle={{
+            ...(isTablet && { fontSize: totalSize(2) }), // Applies only if isTablet is true
+          }}
           onPress={() => {
+            // console.log('btn login')
             navigate(routes.app);
           }}
         />
@@ -158,7 +209,7 @@ export default function Index({handleCurrentPage}) {
             <Icons.Button
               key={index}
               buttonStyle={styles.LoginIconStyling}
-              iconSize={responsiveWidth(6)}
+              iconSize={isTablet ? totalSize(2.7) : responsiveWidth(6.2)}
               iconName={item?.iconName}
               iconType={item?.iconType}
               customIcon={item?.customIcon}
@@ -175,59 +226,99 @@ export default function Index({handleCurrentPage}) {
         //onKeyborderOpenHeightDown={responsiveHeight(18)}
         children={
           <Wrapper
-            style={{
-              height: responsiveHeight(58),
-            }}>
+            style={{ mobileModelStyle }}>
             <Wrapper
               //backgroundColor={'red'}
               alignItemsFlexStart
+              alignItemsFlexEnd
               marginHorizontalBase
-              style={{width: responsiveWidth(90)}}>
-              <Icons.Back
-                color={colors.black}
-                size={responsiveWidth(5)}
-                onPress={handleForgotPasswordModal}
-              />
-              <Spacer isBasic />
+              style={{
+                width: isTablet ? width(70) : responsiveWidth(90),
+              }}>
+              <Wrapper
+                style={{
+                  width: '100%',
+                  alignItems: isTablet ? 'flex-end' : 'flex-start'
+
+
+                }}>
+                <Icons.Back
+                  color={colors.black}
+                  iconName={isTablet ? 'cross':"arrow-back"}
+                  iconType={isTablet ? 'entypo':'ionicon'}
+                  size={isTablet ? totalSize(3.5) : responsiveWidth(5)}
+                  onPress={handleForgotPasswordModal}
+                  style={{ alignSelf: 'flex-end' }}
+                />
+              </Wrapper>
+              {isTablet ? null : <Spacer isBasic />}
               <Text isTinyTitle children={'Forgot Password?'} />
               <Spacer isSmall />
-              <Text isRegular isTextColor2>
+              <Text isRegular isTextColor2
+                style={{
+                  ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+                }}
+              >
                 Enter your email address to reset your password!
               </Text>
             </Wrapper>
-            <Spacer isDoubleBase />
+            {isTablet ? <Spacer /> : <Spacer isDoubleBase />}
             <TextInputs.Bordered
               placeholder={'Enter email'}
               onFocus={value => {
-                value && handleInputFocused({FocusedOn: 'Forget Email'});
+                value && handleInputFocused({ FocusedOn: 'Forget Email' });
+              }}
+              inputStyle={{
+                ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
               }}
               isFocusedContainerColor={
                 InputFocused === 'Forget Email' && colors.black
               }
               customIconRight={appIcons.Email}
-              iconSizeRight={responsiveWidth(6.5)}
+
+              iconSizeRight={isTablet ? totalSize(2.2) : responsiveWidth(6.5)}
               iconColorRight={colors.appTextColor1}
             />
             <Spacer isMedium />
             <Buttons.Colored
+              textStyle={{
+                ...(isTablet && { fontSize: totalSize(2) }), // Applies only if isTablet is true
+              }}
               text={'Reset Password'}
               onPress={handleForgotPasswordModal}
             />
             <Spacer isBase />
             <Wrapper flexDirectionRow alignItemsCenter justifyContentCenter>
-              <Text isRegular isTextColor2 alignTextCenter>
+              <Text isRegular isTextColor2 alignTextCenter
+                     style={{
+                      ...(isTablet && {
+                        fontSize: totalSize(1.6),
+                        fontFamily:appFonts.appTextRegular
+                      })
+                    }}
+                  
+              >
                 You remember?{' '}
               </Text>
               <TouchableOpacity
                 onPress={() => {
                   handleForgotPasswordModal();
-                  handleCurrentPage({PageName: 'Sign Up'});
+                  handleCurrentPage({ PageName: 'Sign Up' });
                 }}>
-                <Text isPrimaryColor isMediumFont>
+                <Text isPrimaryColor isMediumFont
+                  style={{
+                    ...(isTablet && {
+                      fontSize: totalSize(1.6),
+                      fontFamily:appFonts.appTextBold
+                    })
+                  }}
+                >
                   Sign Up
                 </Text>
               </TouchableOpacity>
+
             </Wrapper>
+            {isTablet && <Spacer isDoubleBase />}
           </Wrapper>
         }
       />
@@ -259,8 +350,8 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(75),
   },
   LoginIconStyling: {
-    height: scale(40),
-    width: scale(40),
+    height: isTablet ? totalSize(6) : scale(40),
+    width: isTablet ? totalSize(6) : scale(40),
     padding: responsiveWidth(2),
     marginHorizontal: responsiveWidth(2),
     borderRadius: responsiveWidth(100),

@@ -19,12 +19,12 @@ import {
 import Wrapper from '../wrapper';
 import Text from '../text';
 
-export function Back({size, onPress, style, color}) {
+export function Back({size,iconName,iconType, onPress, style, color}) {
   const defaultSize = size || responsiveWidth(5);
   return (
     <Icon
-      name="arrow-back"
-      type="ionicon"
+      name={iconName??"arrow-back"}
+      type={iconType??"ionicon"}
       size={size ? size : responsiveWidth(3)}
       //raised
       // reverse

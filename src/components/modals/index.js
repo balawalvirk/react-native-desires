@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useMemo, useState} from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import {
   View,
   Image,
@@ -10,7 +10,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {Icon} from '@rneui/base';
+import { Icon } from '@rneui/base';
 import {
   colors,
   sizes,
@@ -31,12 +31,16 @@ import * as Icons from '../icons';
 import * as Buttons from '../buttons';
 import * as ScrollViews from '../scrollViews';
 import LinearGradient from 'react-native-linear-gradient';
-import {BlurView} from '@react-native-community/blur';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {Labels, Lines, MyAnimated, TextInputs} from '..';
-import {scale, verticalScale} from 'react-native-size-matters';
-import MapView, {Marker, Circle} from 'react-native-maps';
-import {MapStyling} from '../../services/utilities/assets/mapStyling';
+import { BlurView } from '@react-native-community/blur';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Labels, Lines, MyAnimated, TextInputs } from '..';
+import { scale, verticalScale } from 'react-native-size-matters';
+import MapView, { Marker, Circle } from 'react-native-maps';
+import { MapStyling } from '../../services/utilities/assets/mapStyling';
+import DeviceInfo from 'react-native-device-info';
+import { height, width, totalSize } from 'react-native-dimension'
+const isTablet = DeviceInfo.isTablet();
+console.log("🚀 ~ isTablet:", isTablet)
 
 // export const Swipable = ({ children, title, isVisible, toggleModal, footerFlex, headerFlex }) => {
 //     return (
@@ -111,27 +115,32 @@ export function Swipable({
   const defaultTopMargin = keyboardVisible
     ? responsiveHeight(12)
     : topMargin
-    ? Platform.OS === 'ios'
-      ? topMargin
-      : topMargin + responsiveHeight(5)
-    : responsiveHeight(12);
+      ? Platform.OS === 'ios'
+        ? topMargin
+        : topMargin + responsiveHeight(5)
+      : responsiveHeight(12);
   return (
     <Modal
       isVisible={visible} // Comment on video User
-      style={{margin: 0}}
+      style={{ margin: 0 }}
       onSwipeComplete={toggle}
       swipeDirection={disableSwipe ? null : 'down'}
       propagateSwipe
       onBackdropPress={disableBackdropPress ? null : toggle}
       backdropOpacity={backdropOpacity ? backdropOpacity : 0}
-      backdropColor={backdropColor && backdropColor}>
+      backdropColor={backdropColor && backdropColor}
+    >
       <Wrapper flex={1}>
         {/* <TouchableOpacity onPress={disableBackdropPress ? null : toggle} activeOpacity={1} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, }}>
                     <LinearGradient style={{ flex: 1 }}
                         colors={['#00000000', '#000000BF']}
                     />
                 </TouchableOpacity> */}
-        <Wrapper flex={1} justifyContentFlexend>
+        <Wrapper flex={1}
+          justifyContentFlexend={!isTablet}
+          justifyContentCenter={isTablet}
+
+        >
           <TouchableOpacity
             onPress={disableBackdropPress ? null : toggle}
             activeOpacity={1}
@@ -145,7 +154,7 @@ export function Swipable({
             {isBlur && blurStart ? (
               <Wrapper flex={1} animation={'fadeIn'}>
                 <BlurView
-                  style={{flex: 1}}
+                  style={{ flex: 1 }}
                   blurType="dark"
                   blurAmount={3}
                   reducedTransparencyFallbackColor="white"
@@ -153,71 +162,142 @@ export function Swipable({
               </Wrapper>
             ) : (
               <LinearGradient
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 colors={['#00000000', '#000000BF']}
               />
             )}
           </TouchableOpacity>
-          <MyAnimated.AnimatedView
-            NotFlexed
-            onPressStart={keyboardVisible && onKeyborderOpenHeightDown}
-            onPressClosed={!keyboardVisible && onKeyborderOpenHeightDown}
-            height={-onKeyborderOpenHeightDown}>
-            <Wrapper
-              style={[
-                {
-                  //flex: 1,
-                  //marginTop: defaultTopMargin,
-                  backgroundColor: colors.appBgColor1,
-                  borderTopRightRadius: 25,
-                  borderTopLeftRadius: 25,
-                  //...appStyles.shadowExtraDark
-                },
-                containerStyle,
-              ]}>
-              {hideHeader ? null : (
-                <Wrapper style={appStyles.rowCompContainer}>
-                  <Wrapper style={{alignItems: 'center', right: 0, left: 0}}>
-                    <Text isTinyTitle style={[appStyles.headerTitleStyle]}>
-                      {/* {data ? data.length + ' People' : 0 + ' People'} */}
-                      {headerTitle ? headerTitle : 'Title'}
-                    </Text>
-                  </Wrapper>
-                  <Wrapper>
-                    {headerLeft ? (
-                      headerLeft
-                    ) : (
-                      // <BackIcon
-                      //     onPress={toggle}
-                      //     color={colors.appTextColor6}
-                      // />
-                      <Icon
-                        name="x"
-                        type="feather"
-                        size={responsiveFontSize(2.5)}
-                        color={colors.appTextColor1}
-                        onPress={toggle}
-                      />
-                    )}
-                  </Wrapper>
 
-                  <Wrapper style={{}}>{headerRight}</Wrapper>
-                </Wrapper>
-              )}
-              {children}
-            </Wrapper>
-            <Wrapper
-              isAbsoluteFill
-              backgroundColor={colors.appBorderColor1}
-              style={{
-                top: -12,
-                left: 10,
-                right: 10,
-                zIndex: -999,
-                borderRadius: responsiveWidth(5),
-              }}
-            />
-          </MyAnimated.AnimatedView>
+
+
+
+
+          {!isTablet ?
+            <MyAnimated.AnimatedView
+              NotFlexed
+              onPressStart={keyboardVisible && onKeyborderOpenHeightDown}
+              onPressClosed={!keyboardVisible && onKeyborderOpenHeightDown}
+              height={-onKeyborderOpenHeightDown}
+
+            >
+              <Wrapper
+                style={[
+                  {
+                    //marginTop: defaultTopMargin,
+                    backgroundColor: colors.appBgColor1,
+                    borderTopRightRadius: 25,
+                    borderTopLeftRadius: 25,
+                    //...appStyles.shadowExtraDark
+
+                    //...appStyles.shadowExtraDark
+                  },
+                  containerStyle,
+                ]}>
+                {hideHeader ? null : (
+                  <Wrapper style={appStyles.rowCompContainer}>
+                    <Wrapper style={{ alignItems: 'center', right: 0, left: 0 }}>
+                      <Text isTinyTitle style={[appStyles.headerTitleStyle]}>
+                        {/* {data ? data.length + ' People' : 0 + ' People'} */}
+                        {headerTitle ? headerTitle : 'Title'}
+                      </Text>
+                    </Wrapper>
+                    <Wrapper>
+                      {headerLeft ? (
+                        headerLeft
+                      ) : (
+                        // <BackIcon
+                        //     onPress={toggle}
+                        //     color={colors.appTextColor6}
+                        // />
+                        <Icon
+                          name="x"
+                          type="feather"
+                          size={responsiveFontSize(2.5)}
+                          color={colors.appTextColor1}
+                          onPress={toggle}
+                        />
+                      )}
+                    </Wrapper>
+
+                    <Wrapper style={{}}>{headerRight}</Wrapper>
+                  </Wrapper>
+                )}
+                {children}
+              </Wrapper>
+              <Wrapper
+                isAbsoluteFill
+                backgroundColor={colors.appBorderColor1}
+                style={{
+                  top: -12,
+                  left: 10,
+                  right: 10,
+                  zIndex: -999,
+                  borderRadius: responsiveWidth(5),
+                }}
+              />
+            </MyAnimated.AnimatedView> :
+            <>
+              <Wrapper
+                style={[
+                  {
+                    //marginTop: defaultTopMargin,
+                    backgroundColor: colors.appBgColor1,
+                    borderTopRightRadius: 25,
+                    borderTopLeftRadius: 25,
+                    borderBottomRightRadius: isTablet ? 25 : 0,
+                    borderBottomLeftRadius: isTablet ? 25 : 0,
+                    marginHorizontal: isTablet ? width(10) : 0
+                    //...appStyles.shadowExtraDark
+
+                    //...appStyles.shadowExtraDark
+                  },
+                  containerStyle,
+                ]}>
+                {hideHeader ? null : (
+                  <Wrapper style={appStyles.rowCompContainer}>
+                    <Wrapper style={{ alignItems: 'center', right: 0, left: 0 }}>
+                      <Text isTinyTitle style={[appStyles.headerTitleStyle]}>
+                        {/* {data ? data.length + ' People' : 0 + ' People'} */}
+                        {headerTitle ? headerTitle : 'Title'}
+                      </Text>
+                    </Wrapper>
+                    <Wrapper>
+                      {headerLeft ? (
+                        headerLeft
+                      ) : (
+                        // <BackIcon
+                        //     onPress={toggle}
+                        //     color={colors.appTextColor6}
+                        // />
+                        <Icon
+                          name="x"
+                          type="feather"
+                          size={responsiveFontSize(2.5)}
+                          color={colors.appTextColor1}
+                          onPress={toggle}
+                        />
+                      )}
+                    </Wrapper>
+
+                    <Wrapper style={{}}>{headerRight}</Wrapper>
+                  </Wrapper>
+                )}
+                {children}
+              </Wrapper>
+              <Wrapper
+                isAbsoluteFill
+                backgroundColor={colors.appBorderColor1}
+                style={{
+                  top: -12,
+                  left: 10,
+                  right: 10,
+                  zIndex: -999,
+                  borderRadius: responsiveWidth(5),
+                }}
+              />
+            </>
+          }
+
         </Wrapper>
       </Wrapper>
     </Modal>
@@ -284,10 +364,10 @@ export function PopupPrimary({
   const customTopMargin = keyboardVisible
     ? responsiveHeight(10)
     : topMargin
-    ? Platform.OS === 'ios'
-      ? topMargin
-      : topMargin - responsiveHeight(10)
-    : defaultTopMargin;
+      ? Platform.OS === 'ios'
+        ? topMargin
+        : topMargin - responsiveHeight(10)
+      : defaultTopMargin;
   const isRowButtons =
     buttonsDirection === 'row' || buttonsDirection === 'row-reverse';
   return (
@@ -310,6 +390,7 @@ export function PopupPrimary({
               style={[
                 {
                   paddingHorizontal: sizes.marginHorizontal,
+                  // backgroundColor:'green',
                   backgroundColor: 'transparent',
                   paddingBottom: sizes.marginVertical,
                   paddingTop: sizes.marginVertical * 1.5,
@@ -327,7 +408,7 @@ export function PopupPrimary({
                   isRegular
                   style={[
                     appStyles.textCenter,
-                    {marginTop: sizes.smallMargin},
+                    { marginTop: sizes.smallMargin },
                     headerSubtitleStyle,
                   ]}>
                   {headerSubtitle}
@@ -361,7 +442,7 @@ export function PopupPrimary({
                         : responsiveFontSize(4)
                     }
                     isRound
-                    //buttonColor={'red'}
+                  //buttonColor={'red'}
                   />
                 ) : null}
               </Wrapper>
@@ -373,9 +454,13 @@ export function PopupPrimary({
         )}
 
         <ScrollViews.WithKeyboardAvoidingView
-          containerStyle={{flex: 0}}
+          containerStyle={{ flex: 0 }}
           scrollEnabled={scrollEnabled}>
-          <Wrapper style={[appStyles.alignItemsCenter]}>
+          <Wrapper style={[
+
+            appStyles.alignItemsCenter,
+
+          ]}>
             {icon || iconName || customIcon ? (
               <>
                 {icon ? (
@@ -389,7 +474,7 @@ export function PopupPrimary({
                     buttonColor={colors.appColor1}
                     buttonSize={responsiveFontSize(10)}
                     iconSize={responsiveFontSize(4)}
-                    buttonStyle={{borderRadius: 100}}
+                    buttonStyle={{ borderRadius: 100 }}
                   />
                 )}
                 <Spacer height={sizes.baseMargin * 1.5} />
@@ -400,7 +485,7 @@ export function PopupPrimary({
             <>
               <Wrapper
                 marginHorizontalBase
-                style={{backgroundColor: 'transparent'}}>
+                style={{ backgroundColor: 'transparent' }}>
                 <Text
                   isSmallTitle
                   isBoldFont
@@ -415,7 +500,7 @@ export function PopupPrimary({
             <>
               <Wrapper
                 marginHorizontalLarge
-                style={{backgroundColor: 'transparent'}}>
+                style={{ backgroundColor: 'transparent' }}>
                 <Text isRegular style={[appStyles.textCenter]}>
                   {info}
                 </Text>
@@ -443,7 +528,7 @@ export function PopupPrimary({
               buttonsContainerStyle,
             ]}>
             {onPressButton2 ? (
-              <Wrapper style={[isRowButtons && {flex: 1}]}>
+              <Wrapper style={[isRowButtons && { flex: 1 }]}>
                 <Buttons.Bordered
                   text={buttonText2}
                   onPress={onPressButton2}
@@ -464,12 +549,12 @@ export function PopupPrimary({
             ) : null}
 
             {onPressButton1 ? (
-              <Wrapper style={[isRowButtons && {flex: 1}]}>
+              <Wrapper style={[isRowButtons && { flex: 1 }]}>
                 <Buttons.Colored
                   text={buttonText1}
                   onPress={onPressButton1}
                   shadow
-                  buttonStyle={[{marginHorizontal: 0}, button1Style]}
+                  buttonStyle={[{ marginHorizontal: 0 }, button1Style]}
                   textStyle={[buttonText1Style]}
                   isLoading={loadingButton1}
                 />
@@ -508,8 +593,8 @@ export function ImagePickerPopup({
               <Buttons.Colored
                 text={button1Text || 'Take Photo'}
                 //  iconName="camera"
-                buttonStyle={{backgroundColor: colors.appBgColor2}}
-                textStyle={[{color: colors.appTextColor3}]}
+                buttonStyle={{ backgroundColor: colors.appBgColor2 }}
+                textStyle={[{ color: colors.appTextColor3 }]}
                 onPress={() => {
                   toggle();
                   setTimeout(() => {
@@ -525,8 +610,8 @@ export function ImagePickerPopup({
           <Buttons.Colored
             text={button2Text || 'Select from Gallery'}
             //iconName="image"
-            buttonStyle={{backgroundColor: colors.appBgColor2}}
-            textStyle={[{color: colors.appTextColor3}]}
+            buttonStyle={{ backgroundColor: colors.appBgColor2 }}
+            textStyle={[{ color: colors.appTextColor3 }]}
             onPress={() => {
               toggle();
               setTimeout(() => {
@@ -539,8 +624,8 @@ export function ImagePickerPopup({
           <Buttons.Colored
             text={cancelText || 'Cancel'}
             //iconName="image"
-            buttonStyle={{backgroundColor: colors.transparent}}
-            textStyle={[{color: colors.appTextColor1}]}
+            buttonStyle={{ backgroundColor: colors.transparent }}
+            textStyle={[{ color: colors.appTextColor1 }]}
             onPress={() => {
               toggle();
             }}
@@ -552,7 +637,7 @@ export function ImagePickerPopup({
   );
 }
 
-export function PlacesAutocomplete({visible, toggle, OnMapPage}) {
+export function PlacesAutocomplete({ visible, toggle, OnMapPage }) {
   const [mapRegion, setMapRegion] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -662,7 +747,7 @@ export function PlacesAutocomplete({visible, toggle, OnMapPage}) {
                     tintColor={colors.appBorderColor1}
                     iconSize={scale(16)}
                     customIcon={appIcons.LocationHistory}
-                    //textContainerStyle={{marginHorizontal: responsiveWidth(5)}}
+                  //textContainerStyle={{marginHorizontal: responsiveWidth(5)}}
                   />
                   <Icon
                     name="trending-up"
@@ -676,7 +761,7 @@ export function PlacesAutocomplete({visible, toggle, OnMapPage}) {
             <Spacer isBasic />
             <Wrapper style={styles.MapMainContainer}>
               <MapView
-                style={{width: scale(320), height: scale(250)}}
+                style={{ width: scale(320), height: scale(250) }}
                 customMapStyle={MapStyling}
                 initialRegion={{
                   latitude: parseFloat(37.7749), // Set to a starting latitude
@@ -698,22 +783,22 @@ export function PlacesAutocomplete({visible, toggle, OnMapPage}) {
               </MapView>
               <Wrapper
                 isAbsolute
-                style={{right: 5, bottom: scale(40), ...appStyles.shadowDark}}>
+                style={{ right: 5, bottom: scale(40), ...appStyles.shadowDark }}>
                 <Icons.Button
                   iconName={'plus'}
                   iconType={'antdesign'}
                   iconSize={scale(15)}
-                  buttonStyle={{borderRadius: responsiveWidth(100)}}
+                  buttonStyle={{ borderRadius: responsiveWidth(100) }}
                 />
               </Wrapper>
               <Wrapper
                 isAbsolute
-                style={{right: 5, bottom: scale(12), ...appStyles.shadowDark}}>
+                style={{ right: 5, bottom: scale(12), ...appStyles.shadowDark }}>
                 <Icons.Button
                   iconName={'minus'}
                   iconType={'antdesign'}
                   iconSize={scale(15)}
-                  buttonStyle={{borderRadius: responsiveWidth(100)}}
+                  buttonStyle={{ borderRadius: responsiveWidth(100) }}
                 />
               </Wrapper>
             </Wrapper>
@@ -725,14 +810,14 @@ export function PlacesAutocomplete({visible, toggle, OnMapPage}) {
   );
 }
 
-export function EditProfile({visible, toggle}) {
+export function EditProfile({ visible, toggle }) {
   const [CurrentStage, setCurrentStage] = useState(1);
   const [MoreInfos, setMoreInfos] = useState(false);
   const [LifeStyle, setLifeStyle] = useState(false);
   const [Interests, setInterests] = useState(false);
   const [ILove, setILove] = useState(false);
 
-  const {image, openLibrary} = useImagePicker();
+  const { image, openLibrary } = useImagePicker();
   const styles = StyleSheet.create({
     ImportedImageContainer: {
       height: responsiveHeight(16),
@@ -754,7 +839,7 @@ export function EditProfile({visible, toggle}) {
           marginHorizontalBase
           flexDirectionRow
           alignItemsCenter
-          style={{flexWrap: 'wrap', gap: scale(14)}}>
+          style={{ flexWrap: 'wrap', gap: scale(14) }}>
           {image && (
             <Image source={image} style={styles.ImportedImageContainer} />
           )}
@@ -780,7 +865,7 @@ export function EditProfile({visible, toggle}) {
           marginHorizontalBase
           flexDirectionRow
           alignItemsCenter
-          style={{flexWrap: 'wrap', gap: scale(14)}}>
+          style={{ flexWrap: 'wrap', gap: scale(14) }}>
           {image && (
             <Image source={image} style={styles.ImportedImageContainer} />
           )}
@@ -806,14 +891,14 @@ export function EditProfile({visible, toggle}) {
   const SecondStep = () => {
     const userData = useMemo(
       () => [
-        {label: 'Height', placeholder: '', rightText: 'cm'},
-        {label: 'Weight', placeholder: '', rightText: 'Kg'},
-        {label: 'Chest', placeholder: '', rightText: 'cm'},
-        {label: 'Waist', placeholder: '', rightText: 'cm'},
-        {label: 'Hips', placeholder: '', rightText: 'cm'},
-        {label: 'Eye Color', placeholder: '', rightText: ''},
-        {label: 'Hair Color', placeholder: '', rightText: ''},
-        {label: 'Hair Length', placeholder: '', rightText: ''},
+        { label: 'Height', placeholder: '', rightText: 'cm' },
+        { label: 'Weight', placeholder: '', rightText: 'Kg' },
+        { label: 'Chest', placeholder: '', rightText: 'cm' },
+        { label: 'Waist', placeholder: '', rightText: 'cm' },
+        { label: 'Hips', placeholder: '', rightText: 'cm' },
+        { label: 'Eye Color', placeholder: '', rightText: '' },
+        { label: 'Hair Color', placeholder: '', rightText: '' },
+        { label: 'Hair Length', placeholder: '', rightText: '' },
       ],
       [],
     );
@@ -825,7 +910,7 @@ export function EditProfile({visible, toggle}) {
           isRegular
           isRegularFont
           isTextColor2
-          style={{marginHorizontal: sizes.baseMargin}}
+          style={{ marginHorizontal: sizes.baseMargin }}
           children={'Tell us more about yourself'}
         />
         <Spacer isBasic />
@@ -847,7 +932,7 @@ export function EditProfile({visible, toggle}) {
             alignItemsCenter
             justifyContentSpaceBetween
             //backgroundColor={'red'}
-            style={{width: responsiveWidth(80)}}>
+            style={{ width: responsiveWidth(80) }}>
             <Wrapper flexDirectionRow alignItemsCenter>
               <Text isSmall isRegularFont isTextColor2>
                 lbs
@@ -907,7 +992,7 @@ export function EditProfile({visible, toggle}) {
           iconSizeRight={scale(24)}
         />
         <Spacer isBasic />
-        <Wrapper flexDirectionRow style={{flexWrap: 'wrap'}}>
+        <Wrapper flexDirectionRow style={{ flexWrap: 'wrap' }}>
           {userData.map((item, index) => (
             <Wrapper
               //backgroundColor={'red'}
@@ -920,7 +1005,7 @@ export function EditProfile({visible, toggle}) {
               <TextInputs.Bordered
                 InputLabel={item?.label}
                 placeholder={'189'}
-                containerStyle={{width: responsiveWidth(40)}}
+                containerStyle={{ width: responsiveWidth(40) }}
                 right={
                   item?.rightText ? (
                     <Text isSmall isBoldFont isPrimaryColor>
@@ -957,7 +1042,7 @@ export function EditProfile({visible, toggle}) {
           isRegular
           isRegularFont
           isTextColor2
-          style={{marginHorizontal: sizes.baseMargin}}
+          style={{ marginHorizontal: sizes.baseMargin }}
           children={'Tell us something more about you'}
         />
         <Spacer isBasic />
@@ -1153,7 +1238,7 @@ export function EditProfile({visible, toggle}) {
       isBlur
       disableSwipe
       toggle={toggle}
-      containerStyle={{maxHeight: responsiveHeight(88)}}
+      containerStyle={{ maxHeight: responsiveHeight(88) }}
       children={
         <View>
           <ScrollViews.WithKeyboardAvoidingView>
@@ -1176,8 +1261,8 @@ export function EditProfile({visible, toggle}) {
               justifyContentFlexend
               //isAbsolute
               paddingVerticalBase
-              //backgroundColor={'blue'}
-              //style={{width: responsiveWidth(100), bottom: 0, left: 0}}
+            //backgroundColor={'blue'}
+            //style={{width: responsiveWidth(100), bottom: 0, left: 0}}
             >
               <Buttons.Colored
                 text={'Save'}
@@ -1369,7 +1454,7 @@ export function EditProfile({visible, toggle}) {
     />
   );
 }
-const ProgressBar = React.memo(({CurrentStandIndex}) => {
+const ProgressBar = React.memo(({ CurrentStandIndex }) => {
   const CompletedStage = CurrentStandIndex - 1;
   return (
     <Wrapper marginHorizontalBase>
@@ -1387,13 +1472,13 @@ const ProgressBar = React.memo(({CurrentStandIndex}) => {
                   CompletedStage >= 0 && CompletedStage == index + 1
                     ? colors.appPrimaryColor
                     : CompletedStage == 2 && index == 0
-                    ? colors.appPrimaryColor
-                    : CurrentStandIndex == index + 1
-                    ? colors.appPrimaryColor
-                    : colors.appBorderColor2,
+                      ? colors.appPrimaryColor
+                      : CurrentStandIndex == index + 1
+                        ? colors.appPrimaryColor
+                        : colors.appBorderColor2,
               }}>
               {(CompletedStage >= 0 && CompletedStage == index + 1) ||
-              (CompletedStage == 2 && index == 0) ? (
+                (CompletedStage == 2 && index == 0) ? (
                 <Icons.Custom icon={appIcons.Tick} size={scale(14)} />
               ) : (
                 <Text
@@ -1436,10 +1521,10 @@ const ProgressBar = React.memo(({CurrentStandIndex}) => {
                 CurrentStandIndex == 1
                   ? responsiveWidth(25)
                   : CurrentStandIndex == 2
-                  ? responsiveWidth(60)
-                  : CurrentStandIndex == 3
-                  ? 'auto'
-                  : 0,
+                    ? responsiveWidth(60)
+                    : CurrentStandIndex == 3
+                      ? 'auto'
+                      : 0,
             }}
           />
         </View>
@@ -1449,7 +1534,7 @@ const ProgressBar = React.memo(({CurrentStandIndex}) => {
 });
 
 const ChoseToCompleteYourProfile = React.memo(
-  ({TotalSelectedValues, Label, ButtonsData}) => {
+  ({ TotalSelectedValues, Label, ButtonsData }) => {
     const [SelectedValues, setSelectedValues] = useState([]);
     return (
       <Wrapper marginHorizontalBase>
@@ -1463,7 +1548,7 @@ const ChoseToCompleteYourProfile = React.memo(
           </Text>
         </Wrapper>
         <Spacer isBasic />
-        <Wrapper flexDirectionRow style={{flexWrap: 'wrap', gap: scale(8)}}>
+        <Wrapper flexDirectionRow style={{ flexWrap: 'wrap', gap: scale(8) }}>
           {ButtonsData.map((item, index) => {
             const isSelected = SelectedValues?.includes(item);
             return (

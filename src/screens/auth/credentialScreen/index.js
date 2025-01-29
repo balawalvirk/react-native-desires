@@ -1,4 +1,4 @@
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import useHooks from './hooks';
 import {
@@ -12,16 +12,36 @@ import {
 import {
   appIcons,
   colors,
+  fontSizes,
   responsiveHeight,
   responsiveWidth,
   sizes,
 } from '../../../services';
-import {CreateAccount, Signin} from '../index';
+import { CreateAccount, Signin } from '../index';
 import LinearGradient from 'react-native-linear-gradient';
-import {BlurView} from '@react-native-community/blur';
+import { BlurView } from '@react-native-community/blur';
+import DeviceInfo from 'react-native-device-info';
+import { totalSize, width, height } from 'react-native-dimension'
+const isTablet = DeviceInfo.isTablet()
+
+const tabletStyle = {
+  height: height(23),
+  width: width(76),
+  alignSelf: 'center',
+
+  borderRadius: responsiveWidth(6)
+}
+
+const mobileStyle = {
+  borderRadius: responsiveWidth(6)
+}
+
+
+
+
 
 export default function Index() {
-  const {CurrentPage, handleCurrentPage} = useHooks();
+  const { CurrentPage, handleCurrentPage } = useHooks();
   return (
     <Wrapper flex={1} backgroundColor={colors.SignInBGColor}>
       <StatusBars.Light />
@@ -31,19 +51,31 @@ export default function Index() {
         <Wrapper
           justifyContentCenter
           //backgroundColor={'red'}
-          style={{height: responsiveHeight(30)}}>
+          style={{ height: responsiveHeight(30) }}>
           <Wrapper
             alignItemsCenter
             paddingVerticalBase
             marginHorizontalBase
             backgroundColor={colors.appBGColor}
-            style={{borderRadius: responsiveWidth(6)}}>
+            // style={{
+            //   height: isTablet && height(23),
+            //   width: isTablet && width(76),
+            //   alignSelf: isTablet && 'center',
+
+            //   borderRadius: responsiveWidth(6)
+            // }}>
+
+            style={{
+              ...(isTablet ? tabletStyle : mobileStyle)
+
+            }}>
             <Spacer isSmall />
             <Image
               source={appIcons.LogoWithWhiteText}
               style={{
-                height: sizes.buttonHeight,
-                width: responsiveWidth(50),
+                height: isTablet ? height(4.7) : sizes.buttonHeight,
+                // width: responsiveWidth(50),
+                width: isTablet ? width(27) : responsiveWidth(50),
                 resizeMode: 'contain',
               }}
             />
@@ -58,12 +90,12 @@ export default function Index() {
                 //justifyContentCenter
                 flexDirectionRow
                 flex={1}
-                //backgroundColor={'red'}
+              //backgroundColor={'red'}
               >
                 <MyAnimated.AnimatedView
                   NotFlexed
                   isAbsolute
-                  width={-responsiveWidth(38)}
+                  width={isTablet ? -totalSize(15) : -responsiveWidth(38)}
                   onPressStart={CurrentPage === 'Sign Up'}
                   onPressClosed={CurrentPage === 'Sign In'}>
                   <Wrapper
@@ -77,11 +109,14 @@ export default function Index() {
                       key={index}
                       style={styles.SeletedLayerContainer}
                       onPress={() => {
-                        handleCurrentPage({PageName: item});
+                        handleCurrentPage({ PageName: item });
                       }}>
                       <Text
                         alignTextCenter
                         isMedium
+                        style={{
+                          ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
+                        }}
                         isBoldFont
                         isWhite={item !== CurrentPage}
                         children={item}
@@ -107,7 +142,7 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   ButtonBackContainer: {
-    height: sizes.inputHeight,
+    height: isTablet ? height(5.5) : sizes.inputHeight,
     borderRadius: responsiveWidth(3),
     paddingHorizontal: sizes.TinyMargin,
     borderRadius: responsiveWidth(100),
@@ -115,9 +150,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   SeletedLayerContainer: {
-    height: sizes.buttonHeight,
+    height: isTablet ? height(4.35) : sizes.buttonHeight,
     borderRadius: responsiveWidth(100),
-    width: responsiveWidth(38),
+    width: isTablet ? width(28.7) : responsiveWidth(38),
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'blue',

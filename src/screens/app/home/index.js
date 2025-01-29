@@ -34,6 +34,7 @@ import {
 import {Card, Icon} from '@rneui/base';
 import {verticalScale} from 'react-native-size-matters';
 import {navigate} from '../../../navigation/rootNavigation';
+import { isTablet } from 'react-native-device-info';
 
 const {height} = Dimensions.get('window'); // Get the screen height
 
@@ -84,6 +85,7 @@ export default function Home() {
               //style={{height: verticalScale(505)}}
             >
               <Cards.Profile
+              
                 CardImage={item?.image}
                 isVip={item?.isVip}
                 isGold={item?.isGold}
@@ -110,8 +112,10 @@ export default function Home() {
         visible={FilterModal}
         isBlur
         children={
-          <Wrapper>
-            <Wrapper marginHorizontalBase>
+          <Wrapper 
+          >
+            <Wrapper
+            marginHorizontalBase>
               <Wrapper
                 flexDirectionRow
                 alignItemsCenter
@@ -121,7 +125,6 @@ export default function Home() {
                 <Text
                   isTinyTitle
                   style={{
-                    //backgroundColor: 'red',
                     width: responsiveWidth(50),
                   }}
                   children={'Filter'}

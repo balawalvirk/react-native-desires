@@ -1,5 +1,5 @@
-import React, {Component, useEffect, useState} from 'react';
-import {Wrapper, Logos} from '../../../components';
+import React, { Component, useEffect, useState } from 'react';
+import { Wrapper, Logos } from '../../../components';
 import {
   appImages,
   appStyles,
@@ -9,11 +9,17 @@ import {
   responsiveWidth,
 } from '../../../services';
 
+import DeviceInfo from 'react-native-device-info';
+import { height, width, totalSize } from 'react-native-dimension'
+const isTablet = DeviceInfo.isTablet();
+
 function Splash() {
   const [Loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => setLoading(!Loading), 1500);
   }, []);
+
+
   return (
     <Wrapper isMain>
       {Loading ? (
@@ -22,15 +28,25 @@ function Splash() {
             <Wrapper
               animation={'fadeIn'}
               paddingHorizontalBase
-              //backgroundColor={'red'}
-              style={{height: responsiveHeight(47)}}>
-              <Logos.PrimaryWhite />
+              // backgroundColor={'red'}
+              style={{
+                height: responsiveHeight(47)
+              }}>
+
+              {isTablet ? <Logos.PrimaryTabletWhite /> :
+               <Logos.PrimaryWhite />}
+
+              {/* <Logos.PrimaryWhite /> */}
+
             </Wrapper>
           </Wrapper>
         </Wrapper>
       ) : (
         <Wrapper animation={'fadeIn'} flex={1} isCenter>
-          <Logos.Primary />
+          {isTablet ? <Logos.PrimaryTablet /> : <Logos.Primary />}
+
+          {/* <Logos.Primary /> */}
+
         </Wrapper>
       )}
     </Wrapper>

@@ -18,12 +18,16 @@ import {
 } from '../../services';
 import * as Icons from '../icons';
 import Text from '../text';
-import {BackgroundImage, Icon} from '@rneui/base';
-import {withDecay} from 'react-native-reanimated';
-import {LinearGradient} from 'react-native-linear-gradient';
-import {Wrapper, Spacer} from '..';
-import {scale, verticalScale} from 'react-native-size-matters';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { BackgroundImage, Icon } from '@rneui/base';
+import { withDecay } from 'react-native-reanimated';
+import { LinearGradient } from 'react-native-linear-gradient';
+import { Wrapper, Spacer } from '..';
+import { scale, verticalScale } from 'react-native-size-matters';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import DeviceInfo from 'react-native-device-info';
+import { height, width, totalSize} from 'react-native-dimension'
+
+const isTablet = DeviceInfo.isTablet();
 
 export function IconTitleArrow({
   iconImage,
@@ -73,10 +77,10 @@ export function IconTitleArrow({
               buttonColor={defaulBackgroundColor}
               buttonSize={responsiveWidth(10)}
               isRound
-              //buttonStyle={{ marginRight: sizes.marginHorizontal }}
+            //buttonStyle={{ marginRight: sizes.marginHorizontal }}
             />
           ) : null}
-          <Text isMedium style={[{color: defaulTintColor}, titleStyle]}>
+          <Text isMedium style={[{ color: defaulTintColor }, titleStyle]}>
             {title}
           </Text>
         </Wrapper>
@@ -110,8 +114,8 @@ export function Profile({
       overflow: 'hidden',
     },
     BackgroundImageStyle: {
-      height: responsiveHeight(60),
-      width: responsiveWidth(90),
+      height: isTablet ?height(63.5): responsiveHeight(60),
+      width: isTablet ?width(68.5): responsiveWidth(90),
       overflow: 'hidden',
       borderRadius: responsiveWidth(4.5),
       resizeMode: 'cover',
@@ -130,7 +134,7 @@ export function Profile({
       left: -responsiveWidth(12),
       backgroundColor: colors.appBgColor1,
       //backgroundColor: 'red',
-      transform: [{rotateZ: '310deg'}],
+      transform: [{ rotateZ: '310deg' }],
       //zIndex: 99,
     },
     LocationMainContainer: {
@@ -162,32 +166,38 @@ export function Profile({
         <Wrapper
           style={[
             styles.mainContainer,
-            isGold && {borderColor: colors.GoldLabelBackground, borderWidth: 2},
-            isVip && {borderColor: colors.appPrimaryColor, borderWidth: 2},
-            isStandard && {borderWidth: 0},
+            isGold && { borderColor: colors.GoldLabelBackground, borderWidth: 2 },
+            isVip && { borderColor: colors.appPrimaryColor, borderWidth: 2 },
+            isStandard && { borderWidth: 0 },
           ]}>
           <ImageBackground
             source={CardImage ? CardImage : appImages.image2}
             style={[
               styles.BackgroundImageStyle,
-              DeckSwiper && {height: verticalScale(420)},
+              DeckSwiper && { height: verticalScale(420) },
             ]}>
             <LinearGradient
               colors={['rgba(34, 24, 49, 0)', 'rgba(27, 36, 49, 0.85)']} // Adjust the colors as needed
-              start={{x: 0, y: 0}} // Start from the top
-              end={{x: 0, y: 1}} // End at the bottom
-              style={{flex: 1, justifyContent: 'flex-end'}}>
+              start={{ x: 0, y: 0 }} // Start from the top
+              end={{ x: 0, y: 1 }} // End at the bottom
+              style={{ flex: 1, justifyContent: 'flex-end' }}>
               <Wrapper
                 marginHorizontalBase
                 justifyContentCenter
                 //paddingVerticalTiny
                 //backgroundColor={'red'}
-                style={{height: responsiveHeight(13)}}>
+                style={{ height: responsiveHeight(13) }}>
                 {/* Profile Details */}
                 <Wrapper>
-                  <Text isTinyTitle isWhite children={'Kaiya Baptista, 27'} />
+                  <Text isTinyTitle isWhite 
+                  
+                  style={{...(isTablet&&{fontSize:totalSize(2.5),fontFamily:appFonts.appTextLight})}}
+                  children={'Kaiya Baptista, 27'} />
                   <Spacer isTiny />
-                  <Text isRegular isWhite children={'Las Vegas, NV'} />
+                  <Text isRegular
+                  
+                  style={{...(isTablet&&{fontSize:totalSize(1.6)})}}
+                  isWhite children={'Las Vegas, NV'} />
                   <Spacer height={responsiveHeight(1.5)} />
                   <Wrapper flexDirectionRow gap={responsiveWidth(2)}>
                     {['Soccer Group', 'Traveling'].map((item, index) => (
@@ -196,7 +206,7 @@ export function Profile({
                         paddingVerticalTiny
                         paddingHorizontalSmall
                         backgroundColor={colors.appBgColor1}
-                        style={{borderRadius: responsiveWidth(2)}}>
+                        style={{ borderRadius: responsiveWidth(2) }}>
                         <Text isTiny children={item} />
                       </Wrapper>
                     ))}
@@ -276,8 +286,8 @@ export function Profile({
               isCenter
               style={[
                 styles.ProfileLabel,
-                isGold && {backgroundColor: colors.GoldLabelBackground},
-                isStandard && {backgroundColor: colors.appBGColor},
+                isGold && { backgroundColor: colors.GoldLabelBackground },
+                isStandard && { backgroundColor: colors.appBGColor },
               ]}>
               <Text
                 alignTextCenter

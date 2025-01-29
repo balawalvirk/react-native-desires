@@ -13,7 +13,14 @@ import {Icons, Images, Spacer, StatusBars, Wrapper} from '../../components';
 import {Icon} from '@rneui/base';
 import * as App from '../../screens/app';
 import {View} from 'react-native-animatable';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from'react-native-dimension'
+
+const isTablet=DeviceInfo.isTablet()
+
+
 const BottomTabStack = createBottomTabNavigator();
+
 
 export default function BottomTabNavigation() {
   const tabIconSize = responsiveFontSize(25);
@@ -35,14 +42,14 @@ export default function BottomTabNavigation() {
           <Icon
             name={iconName}
             type={iconType}
-            size={tabIconSize}
+            size={isTablet?totalSize(2.7):tabIconSize}
             color={color}
             focused={focused}
           />
         ) : (
           <Icons.Custom
             icon={image}
-            size={tabIconSize}
+            size={isTablet?totalSize(2.7):tabIconSize}
             style={{opacity: focused ? 1 : 0.5}}
           />
         )}

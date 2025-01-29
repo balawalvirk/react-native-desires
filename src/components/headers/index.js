@@ -24,6 +24,10 @@ import {Images, Logos} from '..';
 import {ZoomIn} from 'react-native-reanimated';
 import {Icon} from '@rneui/base';
 import {scale} from 'react-native-size-matters';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+
+const isTablet=DeviceInfo.isTablet()
 
 // export const Primary = ({ onBackPress, title, right, left, showBackArrow,shadow,titleStyle,titleContainerStyle,containerStyle }) => {
 //     return (
@@ -239,7 +243,7 @@ export function Common({
         justifyContentSpaceBetween
         // backgroundColor={'red'}
         marginHorizontalBase>
-        {Title ? <Text isSmallTitle children={Title} /> : <Logos.CustomBlack />}
+        {Title ? <Text isSmallTitle children={Title} /> : <Logos.CustomBlack Height={isTablet&&height(6.7)}  Width={isTablet&&width(31.7)}/>}
         <Wrapper //backgroundColor={'blue'}
           alignItemsCenter
           flexDirectionRow>

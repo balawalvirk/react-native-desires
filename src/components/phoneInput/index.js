@@ -4,6 +4,11 @@ import {appIcons, colors, responsiveWidth, sizes} from '../../services';
 import {Icons, Lines, Spacer, Text, Wrapper} from '..';
 import CountryPicker from 'react-native-country-picker-modal';
 import {scale} from 'react-native-size-matters';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+
+
+const isTablet=DeviceInfo.isTablet();
 
 const PhoneNumberInput = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -74,7 +79,7 @@ const PhoneNumberInput = () => {
           />
         </Wrapper>
 
-        <Icons.Custom icon={appIcons.phoneInput} size={scale(22)} />
+        <Icons.Custom icon={appIcons.phoneInput} size={isTablet?totalSize(2.2):scale(22)} />
       </Wrapper>
     </View>
   );

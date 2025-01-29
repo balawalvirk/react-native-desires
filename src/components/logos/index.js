@@ -7,9 +7,10 @@ import {
 } from '../../services';
 import * as Icons from '../icons';
 import {Image} from 'react-native';
+import {totalSize,height,width} from 'react-native-dimension'
 
-export const Primary = ({size}) => {
-  return <Icons.Svg svg={appSvgs.logo} size={size || responsiveWidth(50)} />;
+export const Primary = ({size,height,width}) => {
+  return <Icons.Svg svg={appSvgs.logo} height={height} width={width} size={size || responsiveWidth(50)} />;
 };
 
 export const PrimaryWhite = ({size}) => {
@@ -35,5 +36,16 @@ export const CustomBlack = ({Height, Width, containerStyling}) => {
 export const CustomWhite = ({size}) => {
   return (
     <Icons.Svg svg={appSvgs.logo_white} size={size || responsiveWidth(50)} />
+  );
+};
+
+
+export const PrimaryTablet = ({size,height,width}) => {
+  return <Icons.Svg svg={appSvgs.logoTablet} height={height} width={width} size={totalSize(18)} />;
+};
+
+export const PrimaryTabletWhite = ({size}) => {
+  return (
+    <Icons.Svg svg={appSvgs.logoTabletWhite}  size={size??totalSize(18)} />
   );
 };
