@@ -1,9 +1,11 @@
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import {
   Buttons,
   Headers,
+  Labels,
   Lines,
+  Modals,
   ScrollViews,
   Spacer,
   StatusBars,
@@ -19,15 +21,23 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from '../../../services';
-import {useHooks} from './hooks';
+import { useHooks } from './hooks';
+import { InviteFriendComponent } from './components';
+import DeviceInfo from 'react-native-device-info';
+import { height, width, totalSize } from 'react-native-dimension'
+const isTablet = DeviceInfo.isTablet();
 
-export default function Index() {
-  const {data} = useHooks();
+export default function Index({navigation}) {
+  const { data, visible, setVisible } = useHooks();
   return (
     <Wrapper isMain>
-      <Headers.Primary title={'Invite Friends'} showBackArrow />
-      <Spacer isBasic />
-      <ScrollViews.KeyboardAvoiding>
+      {!isTablet &&
+        <>
+          <Headers.Primary title={'Invite Friends'} showBackArrow />
+          <Spacer isBasic />
+          <InviteFriendComponent />
+        </>}
+      {/* <ScrollViews.KeyboardAvoiding>
         <Wrapper marginHorizontalBase>
           <Text isRegular isRegularFont>
             Here you can generate a QR code to refer a person. The person cal
@@ -60,7 +70,29 @@ export default function Index() {
             />
           </Wrapper>
         </Wrapper>
-      </ScrollViews.KeyboardAvoiding>
+      </ScrollViews.KeyboardAvoiding> */}
+
+
+
+      <Modals.PopupPrimary
+        visible={visible}
+        isBlur
+        children={
+          <Wrapper style={{ borderRadius: totalSize(2) }}>
+            <Labels.ModalLabelWithCross
+              Title={'Invite Friends'}
+              onPress={() => {
+                navigation.goBack()
+                setVisible(false)
+              }}
+              style={{ ...(isTablet && { fontSize: totalSize(3) }) }}
+            />
+            <Wrapper style={{ height: height(70) }}>
+            <InviteFriendComponent />
+            </Wrapper>
+          </Wrapper>
+        }
+      />
     </Wrapper>
   );
 }

@@ -16,7 +16,12 @@ import {
 import {Icons, Text, Wrapper} from '..';
 import Spacer from '../spacer';
 import {scale} from 'react-native-size-matters';
+
+import{width,height,totalSize} from 'react-native-dimension'
+import DeviceInfo, { isTablet } from 'react-native-device-info';
 //import { styles } from './styles'; // Ensure your styles are imported correctly
+
+// const DeviceInfo=DeviceInfo.isTablet()
 
 export const Simple = ({
   ContainerWidth,
@@ -38,7 +43,12 @@ export const Simple = ({
   onValueChange,
   marginHorizontalBase,
   placeholderColor,
+  style,
+  selectedTextStyle
 }) => {
+
+  console.log("🚀 ~ ContainerWidth:", ContainerWidth)
+
   const [value, setValue] = useState(DefaultValue ? DefaultValue : null);
   const Defaultdata = [
     {label: 'Option 1', value: '1'},
@@ -49,8 +59,11 @@ export const Simple = ({
     ? ContainerWidth
     : responsiveWidth(90);
 
+
+    
+
   return (
-    <Wrapper marginHorizontalBase={marginHorizontalBase}>
+    <Wrapper marginHorizontalBase={marginHorizontalBase} style={style}> 
       {DropdownLabel ? (
         <Wrapper>
           <Text isSmall isMediumFont style={styles.DropdownLabel}>
@@ -62,6 +75,7 @@ export const Simple = ({
       <View style={[styles.container, {width: DefaultContainerWidth}]}>
         <View style={styles.dropdownContainer}>
           <Dropdown
+    
             renderLeftIcon={() =>
               customIconLeft ? (
                 <Wrapper
@@ -111,7 +125,7 @@ export const Simple = ({
               color: placeholderColor ? placeholderColor : colors.appTextColor2,
             }}
             value={value}
-            selectedTextStyle={{color: value !== null && colors.appBGColor}}
+            selectedTextStyle={[{ color: value !== null && colors.appBGColor},selectedTextStyle]}
             onChange={item => {
               setValue(item.value);
               onValueChange && onValueChange(item.value);
@@ -163,6 +177,7 @@ export const Small = ({
   marginHorizontalBase,
   placeholderColor,
 }) => {
+
   const [value, setValue] = useState(DefaultValue ? DefaultValue : null);
   const Defaultdata = [
     {label: 'Option 1', value: '1'},
@@ -254,6 +269,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     //padding: 20,
     width: responsiveWidth(90),
+
     //borderColor: 'red',
     //backgroundColor: 'green'
   },

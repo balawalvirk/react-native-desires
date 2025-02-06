@@ -14,6 +14,9 @@ import {Icon} from '@rneui/base';
 import {useState} from 'react';
 import {SpWheelPickerShown} from '../pickers';
 import {scale} from 'react-native-size-matters';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+const isTablet=DeviceInfo.isTablet();
 
 export const ShowTittleAndSelectedOption = ({
   onPress,
@@ -224,6 +227,7 @@ export const IconWithTextSelectOptions = ({
   IsMultiSelector,
   InFlatList,
   NoColorOfIcon,
+  style
 }) => {
   const styles = StyleSheet.create({
     itemContainer: {
@@ -237,8 +241,8 @@ export const IconWithTextSelectOptions = ({
       borderWidth: 0,
     },
     selectionIndicator: {
-      height: scale(20),
-      width: scale(20),
+      height:isTablet?totalSize(2.4): scale(20),
+      width: isTablet?totalSize(2.4):scale(20),
       backgroundColor: colors.appBgColor1,
       borderRadius: responsiveWidth(100),
     },
@@ -257,7 +261,7 @@ export const IconWithTextSelectOptions = ({
     }
   };
 
-  const RenderItem = (item, index) => {
+  const RenderItem = (item, index,style) => {
     const isSelected = selectedValues.includes(item);
 
     return (
@@ -275,7 +279,7 @@ export const IconWithTextSelectOptions = ({
           <Icons.WithText
             iconName={item?.iconName}
             iconType={item?.iconType}
-            iconSize={scale(20)}
+            iconSize={isTablet?totalSize(2.0):scale(20)}
             customIcon={item?.customIcon}
             tintColor={
               NoColorOfIcon
@@ -293,7 +297,11 @@ export const IconWithTextSelectOptions = ({
             }
             textStyle={{
               color: isSelected ? colors.appBgColor1 : colors.appBorderColor1,
-              fontSize: fontSizes.regular,
+             fontSize: fontSizes.regular,
+             ...style
+              
+              // fontSize: totalSize(1.4),
+              
             }}
           />
           {isSelected && (
@@ -301,7 +309,7 @@ export const IconWithTextSelectOptions = ({
               <Icons.Custom
                 icon={appIcons.Tick}
                 color={colors.appBGColor}
-                size={scale(15)}
+                size={isTablet?totalSize(2):scale(15)}
               />
             </Wrapper>
           )}
@@ -318,7 +326,7 @@ export const IconWithTextSelectOptions = ({
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={<Spacer height={responsiveHeight(1.5)} />}
           ListFooterComponent={<Spacer height={responsiveHeight(15)} />}
-          renderItem={({item, index}) => RenderItem(item, index)}
+          renderItem={({item, index}) => RenderItem(item, index,style)}
         />
       ) : (
         <Wrapper gap={responsiveHeight(1.5)}>

@@ -14,6 +14,10 @@ import {
 } from 'react-native-vision-camera';
 import {requestCameraPermission, requestPhotoLibraryPermission} from './hooks';
 import {scale} from 'react-native-size-matters';
+import DeviceInfo from 'react-native-device-info';
+import {hight,width,totalSize} from 'react-native-dimension'
+
+const isTablet=DeviceInfo.isTablet()
 
 export default function Index() {
   const [photo, setPhoto] = useState(null);
@@ -53,7 +57,6 @@ export default function Index() {
       alert('An error occurred while taking the photo. Please try again.');
     }
   };
-
   return (
     <Wrapper isMain>
       <Wrapper marginHorizontalTiny={false}>
@@ -117,6 +120,8 @@ export default function Index() {
         </View>
       ) : null}
     </Wrapper>
+
+
   );
 }
 

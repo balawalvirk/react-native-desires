@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import { useMemo, useState } from 'react';
 import {
   Icons,
   Lines,
@@ -7,8 +7,8 @@ import {
   Text,
   Wrapper,
 } from '../../../../components';
-import {StyleSheet} from 'react-native';
-import {scale, verticalScale} from 'react-native-size-matters';
+import { StyleSheet } from 'react-native';
+import { scale, verticalScale } from 'react-native-size-matters';
 import {
   appIcons,
   appStyles,
@@ -18,12 +18,15 @@ import {
   responsiveWidth,
   sizes,
 } from '../../../../services';
-import {color} from '@rneui/base';
+import { color } from '@rneui/base';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+const isTablet=DeviceInfo.isTablet()
 
 export function useHooks() {
   const [CurrentPage, setCurrentPage] = useState('Visible Profiles');
 
-  function handleCurrentPage({PageName}) {
+  function handleCurrentPage({ PageName }) {
     setCurrentPage(PageName);
   }
 
@@ -127,19 +130,20 @@ export function useHooks() {
     },
   ]);
 
-  const RenderItem = ({IsVip, IsGold, IsGhostNomal, IsGhostVip, Item}) => {
+  const RenderItem = ({ IsVip, IsGold, IsGhostNomal, IsGhostVip, Item }) => {
     const DefaultBackGroundColor = IsVip
       ? colors.appPrimaryColor
       : IsGold
-      ? colors.GoldLabelBackground
-      : IsGhostNomal
-      ? '#F6F6F6'
-      : IsGhostVip
-      ? colors.appBGColor
-      : null;
+        ? colors.GoldLabelBackground
+        : IsGhostNomal
+          ? '#F6F6F6'
+          : IsGhostVip
+            ? colors.appBGColor
+            : null;
     const styles = StyleSheet.create({
       cardMainContainer: {
-        height: verticalScale(140),
+        // height: verticalScale(140),
+        // height: verticalScale(150),
         backgroundColor: DefaultBackGroundColor,
         borderRadius: scale(16),
         padding: sizes.baseMargin,
@@ -147,7 +151,9 @@ export function useHooks() {
     });
     return (
       <Wrapper
-        style={{width: responsiveWidth(100), height: verticalScale(400)}}>
+        // style={{width: responsiveWidth(100), height: verticalScale(400)}}>
+
+        style={{width:isTablet?width(95): responsiveWidth(100), height: verticalScale(400) }}>
         <Wrapper marginHorizontalBase style={styles.cardMainContainer}>
           <Spacer isSmall />
           <Text
@@ -162,7 +168,7 @@ export function useHooks() {
             isRegularFont
             isWhite={!IsGhostNomal}
             isTextColor2={IsGhostNomal}
-            style={{width: scale(240)}}>
+            style={{ width: scale(240) }}>
             {Item?.description}
           </Text>
           <Spacer isBasic />
@@ -174,19 +180,21 @@ export function useHooks() {
               style={{
                 // backgroundColor: 'green',
                 width: scale(100),
-              }}>
+                ...(isTablet&&{fontSize:totalSize(2.6)})
+              }}
+              >
               {Item?.coins?.value} Coins
             </Text>
             <Wrapper
               isAbsolute
               isCenter
-              style={{left: scale(105), bottom: 4}}
-              //backgroundColor={'blue'}
+              style={{ left: scale(105), bottom: 4 }}
+            //backgroundColor={'blue'}
             >
               <Text isSmall isRegularFont isWhite={!IsGhostNomal} style={{}}>
                 {Item?.coins?.originalValue}
               </Text>
-              <Wrapper isAbsolute style={{bottom: scale(6)}}>
+              <Wrapper isAbsolute style={{ bottom: scale(6) }}>
                 <Lines.Horizontal
                   color={IsGhostNomal ? colors.appBGColor : 'white'}
                   height={1}
@@ -208,12 +216,16 @@ export function useHooks() {
               right: 5,
               ...appStyles.shadowDark,
             }}>
-            <Text isMediumTitle isWhite>
+            <Text isMediumTitle isWhite
+
+            style={{ ...(isTablet&&{fontSize:totalSize(3.5)})}}
+            >
               50
             </Text>
             <Wrapper //backgroundColor={'blue'}
-              style={{height: scale(20)}}>
-              <Text isRegular isBoldFont isWhite>
+              style={{ height: scale(20) }}>
+              <Text isRegular isBoldFont isWhite
+              >
                 %
               </Text>
               <Text isTiny isBoldFont isWhite>
@@ -232,10 +244,10 @@ export function useHooks() {
                 marginHorizontalLarge
                 alignItemsCenter
                 justifyContentSpaceBetween>
-                <Text isRegular isRegularFont>
+                <Text isRegular isRegularFont style={{...(isTablet&&{fontSize:totalSize(1.45)})}}>
                   {label}
                 </Text>
-                <Icons.Custom icon={appIcons.TickCircle} size={scale(20)} />
+                <Icons.Custom icon={appIcons.TickCircle} size={isTablet?totalSize(2.2):scale(20)} />
               </Wrapper>
             ))}
           </Wrapper>

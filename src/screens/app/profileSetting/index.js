@@ -21,6 +21,9 @@ import {
 } from '../../../services';
 import {scale} from 'react-native-size-matters';
 import {FlatList, TouchableOpacity} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+const isTablet=DeviceInfo.isTablet();
 
 export default function Index() {
   const {
@@ -46,7 +49,11 @@ export default function Index() {
             marginHorizontalBase
             paddingVerticalBase
             flexDirectionRow
-            alignItemsCenter>
+            alignItemsCenter
+            style={{
+              ...(isTablet&&{paddingVertical:totalSize(1)})
+            }}
+            >
             <Icons.WithText
               customIcon={Icon} // Uncomment this if you want to use the Icon prop
               text={Title}
@@ -58,10 +65,12 @@ export default function Index() {
               textStyle={{
                 fontSize: fontSizes.regular,
                 fontFamily: appFonts.appTextRegular,
+
+                ...(isTablet&&{fontSize:totalSize(1.8)})
               }}
-              iconSize={scale(24)}
+              iconSize={isTablet?totalSize(2.8):scale(24)}
             />
-            <Icons.Custom icon={appIcons.Forward} size={scale(24)} />
+            <Icons.Custom icon={appIcons.Forward} size={isTablet?totalSize(2.4):scale(24)} />
           </Wrapper>
         </TouchableOpacity>
       );
@@ -108,6 +117,7 @@ export default function Index() {
         visible={LocationModalVisible}
         toggle={handleToggleLocationModal}
       />
+      {/* Edit profile model */}
       <Modals.EditProfile
         visible={EditProfileModalVisible}
         toggle={handleToggleEditProfileModal}

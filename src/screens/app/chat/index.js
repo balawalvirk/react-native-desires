@@ -18,6 +18,7 @@ import {
   appImages,
   appStyles,
   colors,
+  fontSizes,
   responsiveHeight,
   responsiveWidth,
   routes,
@@ -31,6 +32,9 @@ import {
   MenuOptions,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import DeviceInfo from 'react-native-device-info';
+import {height, width, totalSize} from'react-native-dimension'
+const isTablet =DeviceInfo.isTablet()
 // Header
 const RenderFlatListHeader = React.memo(({CurrentPage, handleCurrentPage}) => {
   return (
@@ -170,7 +174,7 @@ const FriendRenderDetailForChat = React.memo(({Detail}) => {
         alignItemsCenter>
         {/* Image */}
         <Wrapper>
-          <Images.Round source={appImages.image4} size={scale(48)} />
+          <Images.Round source={appImages.image4} size={isTablet?totalSize(6):scale(48)} />
           {/* Bage */}
           {Detail?.ShowOnline ? (
             <Wrapper isAbsolute style={styles.BadgeMainContainer}>
@@ -183,10 +187,14 @@ const FriendRenderDetailForChat = React.memo(({Detail}) => {
           marginHorizontalSmall
           //backgroundColor={'red'}
           style={{width: responsiveWidth(55)}}>
-          <Text isRegular isBoldFont>
+          <Text isRegular isBoldFont
+           style={{...(isTablet&&{fontSize:totalSize(1.6)})}}
+          >
             {Detail?.name}, {Detail?.age}
           </Text>
-          <Text isSmall isRegularFont isTextColor2>
+          <Text isSmall isRegularFont isTextColor2
+          style={{...(isTablet&&{fontSize:totalSize(1.2)})}}
+          >
             {Detail?.lastMessage} {Detail?.lastMessageTime}
           </Text>
         </Wrapper>
@@ -212,7 +220,7 @@ const FriendRenderDetailForChat = React.memo(({Detail}) => {
             icon={appIcons.camera}
             color={colors.appBorderColor1}
             //containerStyle={{transform: [{rotateY: '180deg'}]}}
-            size={scale(17)}
+            size={isTablet?totalSize(2.4):scale(17)}
           />
 
           <Menu
@@ -314,7 +322,7 @@ const FriendRenderDetailForAnrufe = React.memo(({Detail}) => {
         alignItemsCenter>
         {/* Image */}
         <Wrapper>
-          <Images.Round source={appImages.image4} size={scale(48)} />
+          <Images.Round source={appImages.image4} size={isTablet?totalSize(6):scale(48)} />
           {/* Bage */}
           {Detail?.ShowOnline ? (
             <Wrapper isAbsolute style={styles.BadgeMainContainer}>
@@ -327,7 +335,9 @@ const FriendRenderDetailForAnrufe = React.memo(({Detail}) => {
           marginHorizontalSmall
           //backgroundColor={'red'}
           style={{width: responsiveWidth(48)}}>
-          <Text isRegular isBoldFont>
+          <Text isRegular isBoldFont
+           style={{...(isTablet&&{fontSize:totalSize(1.6)})}}
+          >
             {Detail?.name}, {Detail?.age}
           </Text>
           <Text isSmall isRegularFont isTextColor2>
@@ -339,16 +349,17 @@ const FriendRenderDetailForAnrufe = React.memo(({Detail}) => {
         </Wrapper>
         {/* Icons of Chat and the options */}
         <Wrapper
-          flex={1}
+          flex={isTablet?0:1}
           flexDirectionRow
           alignItemsCenter
+          style={{...(isTablet&&{gap:width(2)})}}
           // backgroundColor={'green'}
           justifyContentSpaceBetween>
           <Icons.Custom
             icon={appIcons.Message}
             color={colors.appBorderColor1}
             containerStyle={{transform: [{rotateY: '180deg'}]}}
-            size={scale(20)}
+            size={isTablet?totalSize(2.4):scale(20)}
             onPress={() => {
               navigate(routes.chatScreen);
             }}
@@ -356,7 +367,7 @@ const FriendRenderDetailForAnrufe = React.memo(({Detail}) => {
           <Icons.Custom
             icon={appIcons.video}
             color={colors.appBorderColor1}
-            size={scale(20)}
+            size={isTablet?totalSize(2.4):scale(20)}
             onPress={() => {
               navigate(routes.videoCall);
             }}
@@ -365,7 +376,7 @@ const FriendRenderDetailForAnrufe = React.memo(({Detail}) => {
             iconType={'ionicon'}
             iconName={'call-outline'}
             iconColor={colors.appBorderColor1}
-            iconSize={scale(20)}
+            iconSize={isTablet?totalSize(2.4):scale(20)}
             buttonColor={colors.transparent}
             buttonStyle={{padding: 0}}
             onPress={() => {

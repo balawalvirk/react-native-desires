@@ -17,6 +17,10 @@ import {
   MenuOptions,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+
+const isTablet = DeviceInfo.isTablet();
 
 export default function Index() {
   return (
@@ -70,7 +74,7 @@ export default function Index() {
                 }}
                 customStyles={{
                   optionWrapper: {
-                    paddingVertical: scale(8),
+                    paddingVertical:isTablet?height(1): scale(8),
                     //paddingHorizontal: scale(12),
                   },
                 }}>
@@ -122,13 +126,21 @@ export default function Index() {
       </Wrapper>
       {/* the Down Container or you can say the control panel */}
       <Wrapper
-        flex={1}
+       flex={!isTablet ? 1 : 0}
         //backgroundColor={'blue'}
         justifyContentFlexend>
+          {isTablet&&<Spacer height={height(16)} />}
         <Wrapper
           style={{
             height: responsiveHeight(25),
             backgroundColor: 'rgba(250,250,250,0.1)',
+         
+              ...(isTablet && {
+                width: width(70), borderRadius: totalSize(2),
+                alignSelf: 'center', height: height(22),
+                overflow: 'hidden'
+              })
+          
           }}>
           <Spacer isSmall />
           <View
@@ -172,23 +184,26 @@ export default function Index() {
                   iconType={item?.iconType}
                   customIcon={item?.customIcon}
                   iconColor={colors.appBgColor1}
-                  iconSize={scale(28)}
+                  iconSize={isTablet ? totalSize(2.7):scale(28)}
                   buttonStyle={{
                     padding: 5,
                     backgroundColor: item?.backgroundColor
                       ? item?.backgroundColor
                       : colors.appBorderColor2 + 50,
-                    height: scale(68),
-                    width: scale(68),
+                    height: isTablet ? totalSize(6.7):scale(68),
+                    width:isTablet ? totalSize(6.7): scale(68),
                     borderRadius: 150,
                   }}
                 />
-                <Spacer isBasic />
+                <Spacer isBasic={!isTablet} isSmall={isTablet} />
                 <Text
                   isRegular
                   isRegularFont
                   isWhite
                   alignTextCenter
+                  style={{
+                   ...(isTablet && { fontSize: totalSize(1.4) }), // Applies only if isTablet is true
+                  }}
                   children={item?.label}
                 />
               </Wrapper>

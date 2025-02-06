@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Labels, Wrapper} from '..';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import {height,width,totalSize} from 'react-native-dimension'
 import {
   appStyles,
   colors,
@@ -9,6 +10,8 @@ import {
   responsiveWidth,
 } from '../../services';
 import {scale} from 'react-native-size-matters';
+import DeviceInfo from 'react-native-device-info';
+const isTablet=DeviceInfo.isTablet();
 
 export function PrimarySlider({
   SliderLabel,
@@ -38,6 +41,9 @@ export function PrimarySlider({
       {SliderLabel ? (
         <Labels.Normal
           Label={SliderLabel}
+          style={{
+            ...(isTablet && { fontSize: totalSize(1) }), // Applies only if isTablet is true
+          }}
           NoMargin
           // If `isMulti` is true, show the range; otherwise, show only one value
           RightText={
@@ -72,7 +78,7 @@ export function PrimarySlider({
 const styles = StyleSheet.create({
   PrimaryTrackStyle: {
     backgroundColor: colors.appBorderColor2,
-    height: responsiveHeight(1),
+    height:isTablet?height(0.6): responsiveHeight(1),
     borderRadius: responsiveWidth(100),
   },
   PrimaryMarkerContainerStyle: {
@@ -82,8 +88,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.appBGColor,
   },
   PrimaryMarkerStyle: {
-    height: scale(30),
-    width: scale(30),
+    height:isTablet?totalSize(3): scale(30),
+    width: isTablet?totalSize(3): scale(30),
     borderRadius: responsiveWidth(100),
     backgroundColor: colors.appBGColor,
     borderWidth: 3.5,

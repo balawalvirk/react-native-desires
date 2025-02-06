@@ -18,6 +18,7 @@ import {
   Text,
   Wrapper,
 } from '../../../../components';
+import {height,width,totalSize} from 'react-native-dimension'
 
 export function useHooks() {
   const [LanguageModal, setLanguageModal] = useState(false);
@@ -121,6 +122,7 @@ export function useHooks() {
     handleToggleIconSealth,
     IconVipData,
     IconSealthData,
+    
   };
 }
 
@@ -136,6 +138,7 @@ export const Options = React.memo(
     description,
     rightText,
     onPressRight,
+    leftContainerStyle
   }) => {
     const [ShowOption, setShowOption] = useState(false);
 
@@ -173,16 +176,21 @@ export const Options = React.memo(
           flexDirectionRow
           marginHorizontalBase
           marginVerticalSmall
+          style={{
+            // is Tablet
+            // // height:height(7)
+            paddingVertical:height(0.3)
+          }}
           //backgroundColor={'pink'}
           alignItemsCenter>
           {/* Image */}
           <Wrapper
             isCenter
-            style={{
+            style={[{
               height: leftMainContainerSize ? leftMainContainerSize : scale(48),
               width: leftMainContainerSize ? leftMainContainerSize : scale(48),
               borderRadius: 150,
-            }}
+            },leftContainerStyle]}
             backgroundColor={leftColor && leftColor}>
             {customleftIcon ? (
               <Icons.Custom
@@ -203,7 +211,9 @@ export const Options = React.memo(
             marginHorizontalSmall
             justifyContentCenter
             //backgroundColor={'blue'}
-            style={{width: responsiveWidth(56)}}>
+            // style={{width: responsiveWidth(56)}}
+            
+            >
             <Text isRegular isBoldFont>
               {title}
             </Text>

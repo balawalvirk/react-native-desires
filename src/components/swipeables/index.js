@@ -13,6 +13,9 @@ import {
 } from '../../services';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {Wrapper, Text, Icons} from '..';
+import DeviceInfo from 'react-native-device-info';
+import {width,totalSize,height} from 'react-native-dimension'
+const isTablet = DeviceInfo.isTablet()
 
 export const SwipableItem = ({
   item,
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.appPrimaryColor,
-    width: responsiveWidth(90),
+    width:responsiveWidth(90),
     height: sizes.buttonHeight,
     borderRadius: responsiveWidth(100),
   },

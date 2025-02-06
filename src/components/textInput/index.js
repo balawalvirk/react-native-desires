@@ -227,12 +227,13 @@ function Bordered({
   containerStyle,
   isFocusedContainerColor,
   inputStyle,
+  labelStyle
 }) {
   return (
     <Wrapper>
       {InputLabel ? (
         <Wrapper marginHorizontalBase>
-          <Text isSmall isMediumFont children={InputLabel} />
+          <Text isSmall isMediumFont children={InputLabel}  style={labelStyle}/>
           <Spacer isTiny />
         </Wrapper>
       ) : null}

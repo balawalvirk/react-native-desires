@@ -1,8 +1,9 @@
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 import {
   Buttons,
   Headers,
+  Icons,
   MyAnimated,
   ScrollViews,
   Spacer,
@@ -10,10 +11,14 @@ import {
   Text,
   Wrapper,
 } from '../../../components';
-import {appStyles, colors, responsiveWidth, sizes} from '../../../services';
-import {useHooks} from './hooks';
+import { appStyles, colors, fontSizes, responsiveWidth, sizes } from '../../../services';
+import { useHooks } from './hooks';
+import DeviceInfo from 'react-native-device-info';
+import { height, width, totalSize } from 'react-native-dimension'
+import { SubscriptionPackagesComponent } from './components';
+const isTablet = DeviceInfo.isTablet();
 
-const Index = () => {
+const Index = ({ navigation }) => {
   const {
     CurrentPage,
     handleCurrentPage,
@@ -22,11 +27,17 @@ const Index = () => {
     InvisiblePackages,
   } = useHooks();
   return (
-    <Wrapper isMain>
-      <Headers.Primary showBackArrow title={'Subscription'} />
-      <Spacer isBasic />
-      {/* The Toggle of the Buttons */}
-      <Wrapper
+    <Wrapper isMain style={{}}>
+      {!isTablet &&
+        <>
+          <Headers.Primary showBackArrow title={'Subscription'} />
+          <Spacer isBasic />
+          {/* The Toggle of the Buttons */}
+          <SubscriptionPackagesComponent RenderItem={RenderItem} handleCurrentPage={handleCurrentPage} CurrentPage={CurrentPage} VisiblePackages={VisiblePackages} InvisiblePackages={InvisiblePackages} />
+        </>
+      }
+
+      {/* <Wrapper
         marginHorizontalBase
         alignItemsCenter
         justifyContentSpaceBetween
@@ -57,6 +68,7 @@ const Index = () => {
                 isRegularFont
                 isWhite={item == CurrentPage}
                 children={item}
+                style={{...(isTablet&&{fontSize:totalSize(1.4)})}}
               />
             </TouchableOpacity>
           );
@@ -89,7 +101,43 @@ const Index = () => {
           //LeftTitle={'Select the Payment Method'}
           BtnTitle={'Swipe To Pay'}
         />
-      </Wrapper>
+      </Wrapper> */}
+      {isTablet && <Wrapper isAbsolute style={{
+        ...(isTablet && {
+          flex: 1,
+          width: width(100),
+          height: height(100),
+          // bottom: 0,
+          // left: 0,
+          // right: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          justifyContent: 'center'
+        })
+      }}>
+        <Wrapper style={{ ...styles.outerWarp }}>
+          <Spacer height={height(1)} />
+          <Wrapper style={{ ...styles.innerWarp }}>
+            <Text
+              style={{ ...(isTablet && { fontSize: totalSize(3) }) }}
+            >
+              Subscription
+            </Text>
+
+            <Icons.Back
+              color={colors.black}
+              iconName={'cross'}
+              iconType={'entypo'}
+              size={totalSize(3.5)}
+              onPress={() => navigation.goBack()}
+              style={{ alignSelf: 'flex-end' }}
+            />
+          </Wrapper>
+
+          <Spacer />
+          <SubscriptionPackagesComponent RenderItem={RenderItem} handleCurrentPage={handleCurrentPage} CurrentPage={CurrentPage} VisiblePackages={VisiblePackages} InvisiblePackages={InvisiblePackages} />
+        </Wrapper>
+
+      </Wrapper>}
     </Wrapper>
   );
 };
@@ -114,6 +162,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //backgroundColor: 'blue',
   },
+
+  outerWarp: {
+    width: width(93),
+    height: height(90),
+    borderRadius: totalSize(2),
+    backgroundColor: colors.appBgColor1,
+    alignSelf: 'center'
+  }
+  ,
+  innerWarp: {
+    paddingHorizontal: width(4),
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }
 });
 
 export default Index;

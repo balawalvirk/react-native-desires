@@ -246,7 +246,9 @@ export function Swipable({
                     borderTopLeftRadius: 25,
                     borderBottomRightRadius: isTablet ? 25 : 0,
                     borderBottomLeftRadius: isTablet ? 25 : 0,
-                    marginHorizontal: isTablet ? width(10) : 0
+                    marginHorizontal: isTablet ? width(10) : 0,
+                    overflow: 'hidden',
+                    
                     //...appStyles.shadowExtraDark
 
                     //...appStyles.shadowExtraDark
@@ -658,7 +660,7 @@ export function PlacesAutocomplete({ visible, toggle, OnMapPage }) {
       //justifyContent: 'center',
     },
     textInput: {
-      fontSize: fontSizes.medium,
+      fontSize: isTablet ? totalSize(1.6) : fontSizes.medium,
       marginHorizontal: sizes.smallMargin,
     },
     listView: {
@@ -694,10 +696,15 @@ export function PlacesAutocomplete({ visible, toggle, OnMapPage }) {
       isBlur
       children={
         <ScrollViews.WithKeyboardAvoidingView>
-          <Wrapper>
+          <Wrapper
+            style={{ ...(isTablet && { height: height(82) }) }}
+          >
             <Labels.ModalLabelWithCross
               Title={OnMapPage ? 'Select City' : 'Place of Residence'}
               onPress={toggle}
+              style={{
+                ...(isTablet && { width: width(64) }), // Applies only if isTablet is true
+              }}
             />
             <Spacer isTiny />
             <GooglePlacesAutocomplete
@@ -713,7 +720,13 @@ export function PlacesAutocomplete({ visible, toggle, OnMapPage }) {
                 key: 'AIzaSyADMSrJ7cO5UoFG_1PwGU3OHwU4v6Ju7eA', // Replace with your API key
                 language: 'en',
               }}
+
               styles={{
+
+                // style={{
+                //   ...(isTablet && { fontSize: width(64) }), // Applies only if isTablet is true
+                // }}
+
                 textInputContainer: styles.textInputContainer,
                 textInput: styles.textInput,
                 predefinedPlacesDescription: {
@@ -724,13 +737,13 @@ export function PlacesAutocomplete({ visible, toggle, OnMapPage }) {
               renderLeftButton={() => (
                 <Icons.Custom
                   icon={appIcons.Search}
-                  size={scale(23)}
+                  size={isTablet ? totalSize(2.4) : scale(23)}
                   color={colors.appBorderColor1}
                 />
               )}
             />
 
-            <Spacer isBasic />
+            {isTablet ? <Spacer isSmall /> : <Spacer isBasic />}
             <Wrapper marginHorizontalBase>
               <Text isSmall isRegularFont children={'History'} />
             </Wrapper>
@@ -745,8 +758,10 @@ export function PlacesAutocomplete({ visible, toggle, OnMapPage }) {
                   <Icons.WithText
                     text={item}
                     tintColor={colors.appBorderColor1}
-                    iconSize={scale(16)}
+                    iconSize={isTablet ? totalSize(1.8) : scale(16)}
                     customIcon={appIcons.LocationHistory}
+
+                    textStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
                   //textContainerStyle={{marginHorizontal: responsiveWidth(5)}}
                   />
                   <Icon
@@ -758,7 +773,7 @@ export function PlacesAutocomplete({ visible, toggle, OnMapPage }) {
                 </Wrapper>
               ))}
             </Wrapper>
-            <Spacer isBasic />
+            {isTablet ? <Spacer isSmall /> : <Spacer isBasic />}
             <Wrapper style={styles.MapMainContainer}>
               <MapView
                 style={{ width: scale(320), height: scale(250) }}
@@ -833,7 +848,10 @@ export function EditProfile({ visible, toggle }) {
   const FirstStep = () => {
     return (
       <Wrapper>
-        <Labels.Normal Label={'Public Pictures'} />
+        <Labels.Normal Label={'Public Pictures'}
+
+          style={{ ...(isTablet && { fontSize: totalSize(2) }) }}
+        />
         <Spacer isSmall />
         <Wrapper
           marginHorizontalBase
@@ -858,8 +876,10 @@ export function EditProfile({ visible, toggle }) {
             </TouchableOpacity>
           </Wrapper>
         </Wrapper>
-        <Spacer isDoubleBase />
-        <Labels.Normal Label={'Private Pictures'} />
+        <Spacer isDoubleBase={!isTablet} isSmall={isTablet} />
+        <Labels.Normal Label={'Private Pictures'}
+          style={{ ...(isTablet && { fontSize: totalSize(2) }) }}
+        />
         <Spacer isSmall />
         <Wrapper
           marginHorizontalBase
@@ -884,7 +904,7 @@ export function EditProfile({ visible, toggle }) {
             </TouchableOpacity>
           </Wrapper>
         </Wrapper>
-        <Spacer height={responsiveHeight(10)} />
+        <Spacer height={isTablet ? height(3) : responsiveHeight(10)} />
       </Wrapper>
     );
   };
@@ -904,14 +924,21 @@ export function EditProfile({ visible, toggle }) {
     );
     return (
       <Wrapper>
-        <Labels.Normal Label={'My Detail'} />
+        <Labels.Normal Label={'My Detail'}
+          style={{ ...(isTablet && { fontSize: totalSize(2) }) }}
+
+        />
         <Spacer isSmall />
         <Text
           isRegular
           isRegularFont
           isTextColor2
-          style={{ marginHorizontal: sizes.baseMargin }}
+          style={{
+            marginHorizontal: sizes.baseMargin,
+            ...(isTablet && { fontSize: totalSize(1.6) }),
+          }}
           children={'Tell us more about yourself'}
+
         />
         <Spacer isBasic />
         {/* Height and Weight Bar */}
@@ -964,29 +991,42 @@ export function EditProfile({ visible, toggle }) {
         {/* Input User Name */}
         <TextInputs.Bordered
           InputLabel={'User Name'}
+          labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+          inputStyle={{ ...(isTablet && { fontSize: totalSize(1.6) }) }}
+
           placeholder={'Ethan Blake'}
+
         />
         <Spacer isBasic />
         {/* Language */}
         <TextInputs.Bordered
           InputLabel={'Language'}
+          labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+          inputStyle={{ ...(isTablet && { fontSize: totalSize(1.6) }) }}
           placeholder={'English'}
           customIconRight={appIcons.Down}
           iconSizeRight={scale(24)}
         />
         <Spacer isBasic />
         {/* Age */}
-        <TextInputs.Bordered InputLabel={'Age'} placeholder={'25'} />
+        <TextInputs.Bordered InputLabel={'Age'}
+          labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+          inputStyle={{ ...(isTablet && { fontSize: totalSize(1.6) }) }}
+          placeholder={'25'} />
         <Spacer isBasic />
         {/* Nationality */}
         <TextInputs.Bordered
           InputLabel={'Nationality'}
+          labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+          inputStyle={{ ...(isTablet && { fontSize: totalSize(1.6) }) }}
           placeholder={'United States of America'}
         />
         <Spacer isBasic />
         {/* Ethnicity  */}
         <TextInputs.Bordered
           InputLabel={'Ethnicity '}
+          labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+          inputStyle={{ ...(isTablet && { fontSize: totalSize(1.6) }) }}
           placeholder={'Caucasian'}
           customIconRight={appIcons.Down}
           iconSizeRight={scale(24)}
@@ -1004,6 +1044,8 @@ export function EditProfile({ visible, toggle }) {
               {/* Height  */}
               <TextInputs.Bordered
                 InputLabel={item?.label}
+                labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+                inputStyle={{ ...(isTablet && { fontSize: totalSize(1.6) }) }}
                 placeholder={'189'}
                 containerStyle={{ width: responsiveWidth(40) }}
                 right={
@@ -1042,14 +1084,19 @@ export function EditProfile({ visible, toggle }) {
           isRegular
           isRegularFont
           isTextColor2
-          style={{ marginHorizontal: sizes.baseMargin }}
+          style={{
+            marginHorizontal: sizes.baseMargin,
+            ...(isTablet && { fontSize: totalSize(1.6) })
+          }}
           children={'Tell us something more about you'}
+
         />
         <Spacer isBasic />
         {/* Who i am */}
         <TextInputs.Bordered
           InputLabel={'Who i am?'}
           placeholder={'Infos'}
+          labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
           right={
             <Icons.WithText
               direction={'row-reverse'}
@@ -1059,6 +1106,7 @@ export function EditProfile({ visible, toggle }) {
               textStyle={{
                 fontSize: fontSizes.regular,
                 color: colors.appTextColor2,
+                ...(isTablet && { fontSize: totalSize(1.4) })
               }}
             />
           }
@@ -1070,6 +1118,7 @@ export function EditProfile({ visible, toggle }) {
         {/* Life Style */}
         <TextInputs.Bordered
           placeholder={'Lifestyle'}
+          labelStyle={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
           right={
             <Icons.WithText
               direction={'row-reverse'}
@@ -1079,6 +1128,7 @@ export function EditProfile({ visible, toggle }) {
               textStyle={{
                 fontSize: fontSizes.regular,
                 color: colors.appTextColor2,
+                ...(isTablet && { fontSize: totalSize(1.4) })
               }}
             />
           }
@@ -1100,6 +1150,7 @@ export function EditProfile({ visible, toggle }) {
               textStyle={{
                 fontSize: fontSizes.regular,
                 color: colors.appTextColor2,
+                ...(isTablet && { fontSize: totalSize(1.4) })
               }}
             />
           }
@@ -1111,6 +1162,7 @@ export function EditProfile({ visible, toggle }) {
         {/* Life Style */}
         <TextInputs.Bordered
           placeholder={'I Love'}
+
           right={
             <Icons.WithText
               direction={'row-reverse'}
@@ -1120,6 +1172,7 @@ export function EditProfile({ visible, toggle }) {
               textStyle={{
                 fontSize: fontSizes.regular,
                 color: colors.appTextColor2,
+                ...(isTablet && { fontSize: totalSize(1.4) })
               }}
             />
           }
@@ -1238,18 +1291,31 @@ export function EditProfile({ visible, toggle }) {
       isBlur
       disableSwipe
       toggle={toggle}
-      containerStyle={{ maxHeight: responsiveHeight(88) }}
+      containerStyle={{
+        overflow: 'hidden',
+
+        // paddingBottom:height(),
+
+        maxHeight: responsiveHeight(89),
+        ...(isTablet && { borderRadius: responsiveWidth(5) }),
+        ...(isTablet && (Interests|| ILove)&& { maxHeight: responsiveHeight(74)}),
+        ...(isTablet && LifeStyle&& { maxHeight: responsiveHeight(80),})
+
+      }}
       children={
         <View>
-          <ScrollViews.WithKeyboardAvoidingView>
+          <ScrollViews.WithKeyboardAvoidingView
+
+          >
             <Labels.ModalLabelWithCross
               Title={'Edit Profile'}
               onPress={toggle}
             />
             <Spacer isBasic />
             <ProgressBar CurrentStandIndex={CurrentStage} />
-            <Spacer height={responsiveHeight(5)} />
+            {isTablet ? <Spacer isBasic /> : <Spacer height={responsiveHeight(5)} />}
             {CurrentStage == 1 ? (
+
               <FirstStep />
             ) : CurrentStage == 2 ? (
               <SecondStep />
@@ -1287,10 +1353,11 @@ export function EditProfile({ visible, toggle }) {
                   right: 1,
                   borderTopLeftRadius: responsiveWidth(5),
                   borderTopRightRadius: responsiveWidth(5),
+
                   //height: responsiveHeight(82),
                   //width: responsiveWidth(100),
                 }}>
-                <ScrollViews.WithKeyboardAvoidingView>
+                <ScrollViews.WithKeyboardAvoidingView containerStyle={{ flex: 1 }}>
                   <Wrapper flex={1}>
                     <Labels.ModalLabelWithCross
                       Title={'More Infos'}
@@ -1420,6 +1487,7 @@ export function EditProfile({ visible, toggle }) {
                   right: 1,
                   borderTopLeftRadius: responsiveWidth(5),
                   borderTopRightRadius: responsiveWidth(5),
+                  ...(isTablet && { borderBottomLeftRadius: responsiveWidth(5), borderBottomRightRadius: responsiveWidth(5) })
                 }}>
                 <ScrollViews.WithKeyboardAvoidingView>
                   <Labels.ModalLabelWithCross
@@ -1537,10 +1605,13 @@ const ChoseToCompleteYourProfile = React.memo(
   ({ TotalSelectedValues, Label, ButtonsData }) => {
     const [SelectedValues, setSelectedValues] = useState([]);
     return (
-      <Wrapper marginHorizontalBase>
+      <Wrapper 
+      marginHorizontalBase>
         {/* Title */}
         <Wrapper flexDirectionRow alignItemsCenter justifyContentSpaceBetween>
-          <Text isLarge isBoldFont>
+          <Text isLarge isBoldFont
+          style={{ ...(isTablet && { fontSize: totalSize(2) })}}
+          >
             {Label}
           </Text>
           <Text isTextColor2 isRegular isRegularFont>
@@ -1548,7 +1619,7 @@ const ChoseToCompleteYourProfile = React.memo(
           </Text>
         </Wrapper>
         <Spacer isBasic />
-        <Wrapper flexDirectionRow style={{ flexWrap: 'wrap', gap: scale(8) }}>
+        <Wrapper flexDirectionRow style={{ flexWrap: 'wrap', gap:isTablet?width(1):scale(8) }}>
           {ButtonsData.map((item, index) => {
             const isSelected = SelectedValues?.includes(item);
             return (
@@ -1569,8 +1640,8 @@ const ChoseToCompleteYourProfile = React.memo(
                 <Wrapper
                   style={[
                     {
-                      paddingHorizontal: scale(20),
-                      paddingVertical: scale(12),
+                      paddingHorizontal:isTablet?width(2):scale(20),
+                      paddingVertical:isTablet?height(1): scale(12),
                       borderWidth: isSelected ? 0 : 1,
                       borderRadius: 150,
                       borderColor: colors.appBorderColor2,
@@ -1580,7 +1651,10 @@ const ChoseToCompleteYourProfile = React.memo(
                       ...appStyles.shadowExtraDark,
                     },
                   ]}>
-                  <Text isTextColor2 isSmall isRegular isWhite={isSelected}>
+                  <Text isTextColor2 isSmall isRegular
+                    isWhite={isSelected}
+                    style={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+                  >
                     {item}
                   </Text>
                 </Wrapper>

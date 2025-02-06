@@ -1,28 +1,38 @@
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import {
   Headers,
+  Icons,
   ScrollViews,
   Spacer,
   StatusBars,
   Text,
   Wrapper,
 } from '../../../components';
-import {appStyles, colors, responsiveFontSize, responsiveWidth} from '../../../services';
-import {useHooks} from './hooks';
-import {color} from '@rneui/base';
+import { appStyles, colors, responsiveFontSize, responsiveWidth } from '../../../services';
+import { useHooks } from './hooks';
+import { color } from '@rneui/base';
+import { MyCreditComponent } from './components';
+import DeviceInfo from 'react-native-device-info';
+import { height, width, totalSize } from 'react-native-dimension'
 
-export default function Index() {
-  const {data} = useHooks();
+
+const isTablet = DeviceInfo.isTablet();
+
+export default function Index({ navigation }) {
+  const { data } = useHooks();
   return (
     <Wrapper isMain>
-      <Headers.Primary
-      title={'My Credit'}
-      showBackArrow />
-      <Spacer isBasic />
-      <ScrollViews.KeyboardAvoiding>
+      {!isTablet && <>
+        <Headers.Primary
+          title={'My Credit'}
+          showBackArrow />
+        <Spacer isBasic />
+        <MyCreditComponent data={data} />
+      </>}
+      {/* <ScrollViews.KeyboardAvoiding>
         {/* Headers */}
-        <Wrapper
+      {/* <Wrapper
           marginHorizontalBase
           flexDirectionRow
           alignItemsCenter
@@ -39,9 +49,9 @@ export default function Index() {
               </Wrapper>
             );
           })}
-        </Wrapper>
-        {/* rows */}
-        {data.map((eachRow, index) => (
+        </Wrapper> */}
+      {/* rows */}
+      {/* {data.map((eachRow, index) => (
           <Wrapper
             key={index}
             //backgroundColor={'red'}
@@ -82,10 +92,67 @@ export default function Index() {
               </Text>
             </Wrapper>
           </Wrapper>
-        ))}
-      </ScrollViews.KeyboardAvoiding>
+        ))} */}
+      {/* </ScrollViews.KeyboardAvoiding> */}
+
+
+
+      {isTablet && <Wrapper isAbsolute style={{
+        ...(isTablet && {
+          flex: 1,
+          width: width(100),
+          height: height(100),
+          backgroundColor: 'rgba(157, 157, 157, 0.2)',
+          justifyContent: 'center'
+        })
+      }}>
+        <Wrapper style={{ ...styles.outerWrap }}>
+          <Spacer height={height(1)} />
+          <Wrapper style={{ ...styles.innerWrap }}>
+            <Text
+              isBoldFont
+              style={{ ...(isTablet && { fontSize: totalSize(3) }) }}
+            >
+              {'My Credit'}
+            </Text>
+            <Icons.Back
+              color={colors.black}
+              iconName={'cross'}
+              iconType={'entypo'}
+              size={totalSize(3.5)}
+              onPress={() => navigation.goBack()}
+              style={{ alignSelf: 'flex-end' }}
+            />
+          </Wrapper>
+
+          <Spacer />
+          <MyCreditComponent data={data} />
+
+        </Wrapper>
+
+      </Wrapper>}
+
     </Wrapper>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+
+  outerWrap: {
+    width: width(90),
+    height: height(90),
+    borderRadius: totalSize(2),
+    backgroundColor: colors.appBgColor1,
+    alignSelf: 'center'
+  },
+  innerWrap: {
+    paddingHorizontal: width(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }
+
+}
+  
+);

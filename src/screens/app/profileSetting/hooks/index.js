@@ -5,12 +5,18 @@ import {
   appImages,
   appStyles,
   colors,
+  fontSizes,
   responsiveHeight,
   responsiveWidth,
   routes,
 } from '../../../../services';
 import {scale} from 'react-native-size-matters';
 import {navigate} from '../../../../navigation/rootNavigation';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+
+
+const isTablet = DeviceInfo.isTablet();
 
 export function useHooks() {
   const [LocationModalVisible, setLocationModalVisible] = useState(false);
@@ -30,7 +36,7 @@ export function useHooks() {
         <Wrapper
           alignItemsCenter
           style={{
-            height: responsiveHeight(30),
+            height:responsiveHeight(30),
             backgroundColor: colors.appBGColor,
             borderBottomLeftRadius: responsiveWidth(6),
             borderBottomRightRadius: responsiveWidth(6),
@@ -39,11 +45,13 @@ export function useHooks() {
           <Images.Round
             style={{position: 'absolute', bottom: -responsiveHeight(5)}}
             source={appImages.profile}
-            size={scale(160)}
+            size={ isTablet?totalSize(20):scale(160)}
           />
         </Wrapper>
         <Spacer height={responsiveHeight(6)} />
-        <Text isSmallTitle alignTextCenter>
+        <Text isSmallTitle alignTextCenter
+        style={{...isTablet&&{fontSize:totalSize(3)}}}
+        >
           Ethan Blake, 25
         </Text>
         <Spacer isTiny />

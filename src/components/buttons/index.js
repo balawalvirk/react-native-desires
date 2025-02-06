@@ -32,9 +32,10 @@ export function Colored({
   iconStyle,
   tintColor,
   direction,
+  btnStyle
 }) {
   return (
-    <TouchableOpacity onPress={onPress} disabled={isLoading ? true : disabled}>
+    <TouchableOpacity onPress={onPress} disabled={isLoading ? true : disabled} style={btnStyle}>
       <Wrapper
         animation={animation}
         style={[

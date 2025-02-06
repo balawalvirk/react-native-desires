@@ -18,6 +18,10 @@ import {
 } from '../../services';
 import Wrapper from '../wrapper';
 import Text from '../text';
+import DeviceInfo from 'react-native-device-info';
+import { totalSize, width, height } from'react-native-dimension'
+
+const isTablet =DeviceInfo.isTablet()
 
 export function Back({size,iconName,iconType, onPress, style, color}) {
   const defaultSize = size || responsiveWidth(5);
@@ -216,7 +220,7 @@ export function WithText({
         <Icon
           name={iconName ? iconName : 'email'}
           type={iconType ? iconType : 'material-community'}
-          size={defaulIconSize}
+          size={isTablet?totalSize(2.2):defaulIconSize}
           color={tintColor ? tintColor : colors.appTextColor1}
           iconStyle={iconStyle}
         />

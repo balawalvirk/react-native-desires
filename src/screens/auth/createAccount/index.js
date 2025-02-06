@@ -416,7 +416,6 @@ export default function Index(props) {
         children={
           <Wrapper
             style={{
-              height: responsiveHeight(80),
               height: isTablet ? height(70) : responsiveHeight(80),
             }}>
             <ScrollViews.KeyboardAvoiding>
@@ -444,7 +443,7 @@ export default function Index(props) {
                 <Spacer isBasic />
                 <Text isTinyTitle
 
-                  children={isTablet?'Personal Info':'Personal Information'} />
+                  children={isTablet ? 'Personal Info' : 'Personal Information'} />
                 <Spacer isSmall />
                 <Text isRegular isTextColor2
                   style={{
@@ -506,9 +505,9 @@ export default function Index(props) {
                 alignItemsCenter
                 justifyContentSpaceBetween>
                 <Text isRegular isRegularFont
-                      style={{
-                        ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
-                      }}
+                  style={{
+                    ...(isTablet && { fontSize: totalSize(1.5) }), // Applies only if isTablet is true
+                  }}
                 >
                   Place of residence
                 </Text>
@@ -537,6 +536,9 @@ export default function Index(props) {
                 //backgroundColor={'red'}
                 justifyContentFlexend>
                 <Buttons.Colored
+                  textStyle={{
+                    ...(isTablet && { fontSize: totalSize(2) }), // Applies only if isTablet is true
+                  }}
                   text={'Next'}
                   onPress={() => {
                     handleTogglePersonInfoModal();
@@ -558,29 +560,44 @@ export default function Index(props) {
         children={
           <Wrapper
             style={{
-              height: responsiveHeight(81),
+              height: isTablet ? height(73) : responsiveHeight(81),
             }}>
             <ScrollViews.KeyboardAvoiding>
               <Wrapper
                 //backgroundColor={'red'}
                 alignItemsFlexStart
                 marginHorizontalBase
-                style={{ width: responsiveWidth(90) }}>
-                <Icons.Back
-                  color={colors.black}
-                  size={responsiveWidth(5)}
-                  onPress={handleToggleUploadImageModal}
-                />
-                <Spacer isBasic />
+                style={{ width: isTablet ? width(70) : responsiveWidth(90) }}>
+
+                <Wrapper style={{
+                  width: '100%',
+                  alignItems: isTablet ? 'flex-end' : 'flex-start'
+
+
+                }}>
+                  <Icons.Back
+                    color={colors.black}
+                    iconName={isTablet ? 'cross' : "arrow-back"}
+                    iconType={isTablet ? 'entypo' : 'ionicon'}
+                    size={isTablet ? totalSize(3.5) : responsiveWidth(5)}
+                    onPress={handleToggleUploadImageModal}
+                  />
+                </Wrapper>
+                {isTablet ? null : <Spacer isBasic />}
                 <Text isTinyTitle children={'Uploade pictures from you'} />
                 <Spacer isSmall />
-                <Text isRegular isRegularFont isTextColor2>
+                <Text isRegular isRegularFont isTextColor2
+                  style={{
+                    ...(isTablet && { fontSize: totalSize(1.8), textAlign: 'justify' }), // Applies only if isTablet is true
+                  }}
+                >
                   No nude pictures may be uploaded here. Please upload pictures
                   of this kind only to private galleries. All pictures that
                   violate our guidelines will be deleted immediately.
                 </Text>
               </Wrapper>
-              <Spacer isDoubleBase />
+              {isTablet ? <Spacer isSmall /> :  <Spacer isDoubleBase />}
+             
               {/* upload image */}
               <UploadImage />
               <Spacer isMedium />
@@ -590,7 +607,7 @@ export default function Index(props) {
                 flexDirectionRow
                 alignItemsCenter
                 justifyContentSpaceBetween>
-                <Text style={{ width: responsiveWidth(73) }}>
+                <Text style={{ width:isTablet?width(58): responsiveWidth(73) }}>
                   Do you want to remain invisible to others?{'\n'}The Ghose mode
                   is perfect for you
                 </Text>
@@ -603,6 +620,9 @@ export default function Index(props) {
               //backgroundDark
               >
                 <Buttons.Colored
+                  textStyle={{
+                    ...(isTablet && { fontSize: totalSize(2) }), // Applies only if isTablet is true
+                  }}
                   text={'Next'}
                   onPress={() => {
                     handleToggleUploadImageModal();
@@ -699,7 +719,7 @@ const ChoseToCompleteYourProfile = React.memo(
                     title={item?.Title}
                     titleStyle={[
                       {
-                        fontSize: fontSizes.regular,
+                        fontSize: isTablet ? totalSize(1.4) : fontSizes.regular,
                         fontFamily: appFonts.appTextRegular,
                         color: colors.appTextColor2,
                       },
@@ -724,7 +744,12 @@ const UploadImage = ({ }) => {
   const { image, openLibrary } = useImagePicker();
   return (
     <Wrapper>
-      <Labels.Normal Label={'Public Pictures'} />
+      <Labels.Normal Label={'Public Pictures'} 
+          style={{
+            ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
+          }}
+      
+      />
       <Spacer isSmall />
       <Wrapper
         marginHorizontalBase
@@ -750,7 +775,9 @@ const UploadImage = ({ }) => {
         </Wrapper>
       </Wrapper>
       <Spacer isBasic />
-      <Labels.Normal Label={'Private Pictures'} />
+      <Labels.Normal Label={'Private Pictures'}   style={{
+            ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
+          }}/>
       <Spacer isSmall />
       <Wrapper
         marginHorizontalBase

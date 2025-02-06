@@ -20,6 +20,11 @@ import {
 import {scale} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 import {MapStyling} from '../../../services/utilities/assets/mapStyling';
+import DeviceInfo from 'react-native-device-info';
+import {height, width, totalSize} from'react-native-dimension'
+
+
+const isTablet=DeviceInfo.isTablet();
 
 export default function Index() {
   const {TopRightButtonsData, SearchModal, HandleSearchModal} = useHooks();

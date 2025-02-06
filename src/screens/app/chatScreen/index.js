@@ -32,6 +32,10 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import {useHooks} from './hooks';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+
+const isTablet=DeviceInfo.isTablet();
 
 const Index = () => {
   const {chatOptions, ChatSperater, chatData} = useHooks();
@@ -158,7 +162,10 @@ const Index = () => {
                   paddingVerticalBase
                   backgroundColor={colors.appBGColor}
                   style={styles.MeMessageContainer}>
-                  <Text isWhite isRegular isRegularFont>
+                  <Text isWhite isRegular isRegularFont
+                
+                // style={{...isTablet&&{fontSize:totalSize(1.8)}}}
+                  >
                     {item?.message}
                   </Text>
                 </Wrapper>
@@ -173,6 +180,7 @@ const Index = () => {
                   textStyle={{
                     color: colors.appTextColor2,
                   }}
+
                 />
                 <Spacer isBasic />
               </Wrapper>
@@ -215,7 +223,7 @@ const Index = () => {
             buttonStyle={{
               padding: 0,
             }}
-            iconSize={scale(20)}
+            iconSize={isTablet?totalSize(2.4):scale(20)}
           />
           <Icons.Button
             iconName={'link'}
@@ -224,7 +232,7 @@ const Index = () => {
             buttonStyle={{
               padding: 0,
             }}
-            iconSize={scale(20)}
+            iconSize={isTablet?totalSize(2.4):scale(20)}
           />
 
           <Icons.Button
@@ -233,8 +241,8 @@ const Index = () => {
             iconColor={colors.appBgColor1}
             buttonColor={colors.appBGColor}
             buttonStyle={{
-              height: responsiveHeight(4.5),
-              width: scale(36),
+              height:isTablet?totalSize(4.6): responsiveHeight(4.5),
+              width:isTablet?totalSize(4.6): scale(36),
               //borderColor: colors.appBorderColor2,
             }}
             iconSize={scale(20)}
@@ -247,8 +255,8 @@ const Index = () => {
           iconColor={colors.appPrimaryColor}
           isWithBorder
           buttonStyle={{
-            height: responsiveHeight(6),
-            width: scale(48),
+            height: isTablet?totalSize(5.6): responsiveHeight(6),
+            width:isTablet?totalSize(5.6): scale(48),
             borderColor: colors.appBorderColor2,
           }}
           iconSize={scale(22)}
@@ -321,7 +329,7 @@ const styles = StyleSheet.create({
   },
   ChatInputContainer: {
     height: responsiveHeight(6),
-    width: responsiveWidth(72),
+    width:isTablet?width(78): responsiveWidth(72),
     borderWidth: 1,
     borderRadius: 150,
     borderColor: colors.appBorderColor2,

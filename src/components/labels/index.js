@@ -4,6 +4,9 @@ import {Spacer, Text, Wrapper} from '..';
 import {colors, fontSizes, responsiveWidth} from '../../services';
 import {Icon} from '@rneui/base';
 import {scale} from 'react-native-size-matters';
+import DeviceInfo from 'react-native-device-info';
+
+const isTablet=DeviceInfo.isTablet();
 
 export function Normal({
   Label,
@@ -11,6 +14,7 @@ export function Normal({
   NoMargin,
   alignTextCenter,
   FontSize,
+  style
 }) {
   return (
     <Wrapper
@@ -25,7 +29,7 @@ export function Normal({
           isMedium
           isBoldFont
           alignTextCenter={alignTextCenter}
-          style={[FontSize && {fontSize: FontSize}]}>
+          style={[FontSize && {fontSize: FontSize},style]}>
           {Label}
         </Text>
       ) : null}
@@ -38,7 +42,7 @@ export function Normal({
   );
 }
 
-export function ModalLabelWithCross({Title, Description, onPress}) {
+export function ModalLabelWithCross({Title, Description, onPress,style,descriptionStyle}) {
   return (
     <Wrapper marginHorizontalBase>
       <Wrapper
@@ -46,13 +50,12 @@ export function ModalLabelWithCross({Title, Description, onPress}) {
         alignItemsCenter
         justifyContentSpaceBetween
         //backgroundColor={'blue'}
+        
       >
         <Text
           isTinyTitle
-          style={{
-            // backgroundColor: 'red',
-            width: responsiveWidth(70),
-          }}
+          style={isTablet ? style : { width: responsiveWidth(70) }}
+
           children={Title}
         />
         <TouchableOpacity onPress={onPress}>
@@ -67,7 +70,7 @@ export function ModalLabelWithCross({Title, Description, onPress}) {
       {Description ? (
         <>
           <Spacer isTiny />
-          <Text isTextColor2 isRegular isRegularFont children={Description} />
+          <Text isTextColor2 isRegular isRegularFont children={Description}  style={descriptionStyle}/>
         </>
       ) : (
         <Spacer isSmall />

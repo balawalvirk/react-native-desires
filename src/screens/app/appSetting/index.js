@@ -1,5 +1,5 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
 import {
   Text,
   BarButtons,
@@ -25,10 +25,15 @@ import {
   responsiveWidth,
   sizes,
 } from '../../../services';
-import {scale, verticalScale} from 'react-native-size-matters';
-import {Options, useHooks} from './hooks';
+import { scale, verticalScale } from 'react-native-size-matters';
+import { Options, useHooks } from './hooks';
+import AppSettingInfo from './components';
+import DeviceInfo from 'react-native-device-info';
+import { height, width, totalSize } from 'react-native-dimension'
+const isTablet = DeviceInfo.isTablet()
 
-export default function Index() {
+
+export default function Index({ navigation }) {
   const {
     unitsData,
     LanguageModal,
@@ -49,41 +54,55 @@ export default function Index() {
   } = useHooks();
   return (
     <Wrapper isMain>
-      <Headers.Primary showBackArrow title={'App - Settings'} />
-      <ScrollViews.KeyboardAvoiding>
+      {!isTablet &&
+        <>
+          <Headers.Primary showBackArrow title={'App - Settings'} />
+
+          <AppSettingInfo
+            unitsData={unitsData}
+            handleToggleIconSealth={handleToggleIconSealth}
+            handleToggleIconVip={handleToggleIconVip}
+            handleToggleLocationModal={handleToggleLocationModal}
+            handleTogglePrivacyPolicyModal={handleTogglePrivacyPolicyModal}
+            handleToggleTermsConditionsModal={handleToggleTermsConditionsModal}
+            handleToggleAccessModal={handleToggleAccessModal}
+          />
+
+        </>}
+      {/* <ScrollViews.KeyboardAvoiding>
         <Spacer isSmall />
         {/* Languages Input */}
-        <TextInputs.Bordered
+      {/* <TextInputs.Bordered
           InputLabel={'Language'}
           placeholder={'English'}
           iconSizeRight={scale(24)}
           placeholderTextColor={colors.appTextColor2}
           customIconRight={appIcons.Down}
           onPress={handleToggleLocationModal}
-        />
-        <Spacer isBasic />
-        {/* Audio & Video Call Input */}
-        <TextInputs.Bordered
+        /> */}
+      {/* <Spacer isBasic /> */}
+      {/* Audio & Video Call Input */}
+      {/* <TextInputs.Bordered
           InputLabel={'Audio & Video Call'}
           placeholder={'Not Activate'}
           placeholderTextColor={colors.appTextColor2}
           customIconRight={appIcons.Down}
           onPress={() => {}}
           right={<Switches.Custom />}
-        />
-        <Spacer isBasic />
-        {/* Discover  */}
-        <TextInputs.Bordered
+        /> */}
+      {/* <Spacer isBasic /> */}
+      {/* Discover  */}
+      {/* <TextInputs.Bordered
           InputLabel={'Discover'}
           placeholder={'Show me'}
           placeholderTextColor={colors.appTextColor2}
           customIconRight={appIcons.Down}
           onPress={() => {}}
           right={<Switches.Custom />}
-        />
-        <Spacer isBasic />
-        {/* App Icon  */}
-        <Wrapper gap={responsiveHeight(1)}>
+        /> */}
+      {/* <Spacer isBasic /> */}
+      {/* App Icon  */}
+      {/* <Wrapper gap={responsiveHeight(1)}>
           <TextInputs.Bordered
             InputLabel={'App Icons'}
             placeholder={'VIP'}
@@ -103,10 +122,10 @@ export default function Index() {
             }}
           />
         </Wrapper>
-        <Spacer isBasic />
+        <Spacer isBasic /> */}
 
-        {/* Notifications  */}
-        <Wrapper gap={responsiveHeight(1)}>
+      {/* Notifications  */}
+      {/* <Wrapper gap={responsiveHeight(1)}>
           <TextInputs.Bordered
             InputLabel={'Notifications'}
             placeholder={'Chats'}
@@ -136,13 +155,13 @@ export default function Index() {
             onPress={() => {}}
             right={<Switches.Custom />}
           />
-        </Wrapper>
-        <Spacer isBasic />
+        </Wrapper> */}
+      {/* <Spacer isBasic />
         <Wrapper marginHorizontalBase>
           <Text isSmall isMediumFont children={'UNITS'} />
           <Spacer isTiny />
-        </Wrapper>
-        <Wrapper gap={responsiveHeight(1)}>
+        </Wrapper> */}
+      {/* <Wrapper gap={responsiveHeight(1)}>
           {unitsData.map((item, index) => (
             <Wrapper
               key={index}
@@ -175,9 +194,9 @@ export default function Index() {
             </Wrapper>
           ))}
         </Wrapper>
-        <Spacer isBasic />
-        {/* Privacy  */}
-        <Wrapper gap={responsiveHeight(1)}>
+        <Spacer isBasic /> */}
+      {/* Privacy  */}
+      {/* <Wrapper gap={responsiveHeight(1)}>
           <TextInputs.Bordered
             InputLabel={'Privacy'}
             placeholder={'Privacy Policy'}
@@ -203,16 +222,16 @@ export default function Index() {
         </Wrapper>
         <Wrapper paddingVerticalBase>
           <Text alignTextCenter isTextColor2 children={'2023 DESIRES 0.0.1'} />
-        </Wrapper>
-      </ScrollViews.KeyboardAvoiding>
+        </Wrapper> */}
+      {/* </ScrollViews.KeyboardAvoiding> */}
       {/* Languages Modal */}
       <Modals.PopupPrimary
         isBlur
         visible={LanguageModal}
         toggle={handleToggleLocationModal}
-        mainContainerStyle={{height: responsiveHeight(75)}}
-        containerStyle={{flex: 1}}>
-        <View style={{height: responsiveHeight(74)}}>
+        mainContainerStyle={{ height: responsiveHeight(75) }}
+        containerStyle={{ flex: 1 }}>
+        <View style={{ height: responsiveHeight(74) }}>
           <ScrollViews.KeyboardAvoiding>
             <Wrapper>
               <Labels.ModalLabelWithCross
@@ -227,8 +246,13 @@ export default function Index() {
             </Wrapper>
           </ScrollViews.KeyboardAvoiding>
         </View>
-        <Wrapper style={styles.buttonONtheBottom} paddingVerticalBase>
-          <Buttons.Colored text={'Apply'} onPress={handleToggleLocationModal} />
+        <Wrapper style={[styles.buttonONtheBottom]} paddingVerticalBase>
+          <Buttons.Colored text={'Apply'}
+            textStyle={{
+              ...(isTablet && { fontSize: totalSize(1.7) })
+
+            }}
+            onPress={handleToggleLocationModal} />
         </Wrapper>
       </Modals.PopupPrimary>
 
@@ -258,9 +282,13 @@ export default function Index() {
               children={'Email: dean@dexxire.com'}
             />
             <Spacer isBasic />
-            <Buttons.Colored text={'Update email'} />
+            <Buttons.Colored text={'Update email'}
+              textStyle={{ ...(isTablet && { fontSize: totalSize(1.7) }) }}
+            />
             <Spacer isSmall />
-            <Buttons.Colored text={'Change Password'} />
+            <Buttons.Colored text={'Change Password'}
+              textStyle={{ ...(isTablet && { fontSize: totalSize(1.7) }) }}
+            />
             <Spacer height={verticalScale(180)} />
             <Wrapper paddingVerticalBase>
               <Text
@@ -270,6 +298,8 @@ export default function Index() {
                 isMediumFont
                 children={'Delete My Profile'}
                 onPress={handleToggleAccessModal}
+                style={{ ...(isTablet && { fontSize: totalSize(1.7) }) }}
+
               />
             </Wrapper>
           </Wrapper>
@@ -280,15 +310,21 @@ export default function Index() {
         isBlur
         disableSwipe
         visible={TermsConditionsModal}
-        toggle={handleToggleTermsConditionsModal}>
-        <ScrollViews.KeyboardAvoiding>
+        toggle={handleToggleTermsConditionsModal}
+
+        mainContainerStyle={{ ...(isTablet && { height: height(78) }) }}
+      >
+        <ScrollViews.KeyboardAvoiding >
           <Wrapper>
             <Labels.ModalLabelWithCross
               Title={'Terms & Conditions'}
               onPress={handleToggleTermsConditionsModal}
             />
             <Wrapper marginHorizontalBase>
-              <Text isRegular isRegularFont isTextColor2>
+              <Text isRegular isRegularFont isTextColor2
+
+                style={{ ...(isTablet && { fontSize: totalSize(1.45) }) }}
+              >
                 General Terms and Conditions of the DESIRES app Valid version
                 November 22, 2024.{'\n'}
                 <Spacer isMedium />
@@ -342,6 +378,7 @@ export default function Index() {
                 These have been specially developed for this case and make you
                 invisible. You see every member, but you are
               </Text>
+              {isTablet && <Spacer height={height(8)} />}
             </Wrapper>
           </Wrapper>
           <Spacer isBasic />
@@ -352,7 +389,10 @@ export default function Index() {
         isBlur
         disableSwipe
         visible={PrivacyPolicyModal}
-        toggle={handleTogglePrivacyPolicyModal}>
+        toggle={handleTogglePrivacyPolicyModal}
+        mainContainerStyle={{ ...(isTablet && { height: height(78) }) }}
+      >
+
         <ScrollViews.KeyboardAvoiding>
           <Wrapper>
             <Labels.ModalLabelWithCross
@@ -360,8 +400,11 @@ export default function Index() {
               onPress={handleTogglePrivacyPolicyModal}
             />
             <Wrapper marginHorizontalBase>
-              <Text>
-                <Text isMediumFont isPrimaryColor>
+              <Text
+                style={{ ...(isTablet && { fontSize: totalSize(1.4) }) }}
+              >
+                <Text isMediumFont isPrimaryColor
+                >
                   Privacy Policy of DESIRES App Inc.
                 </Text>
                 {'\n'}
@@ -412,8 +455,8 @@ export default function Index() {
         disableSwipe
         visible={AppIconsVip}
         toggle={handleToggleIconVip}
-        mainContainerStyle={{height: responsiveHeight(75)}}
-        containerStyle={{flex: 1}}>
+        mainContainerStyle={{ height: responsiveHeight(75) }}
+        containerStyle={{ flex: 1 }}>
         <ScrollViews.KeyboardAvoiding>
           <Wrapper>
             <Labels.ModalLabelWithCross
@@ -423,14 +466,16 @@ export default function Index() {
           </Wrapper>
           <Spacer isSmall />
           <Wrapper marginHorizontalBase>
-            <Text isRegular isRegularFont>
+            <Text isRegular isRegularFont
+              style={{ ...(isTablet && { fontSize: totalSize(1.45), textAlign: 'justify' }) }}
+            >
               As a VIP member, you not only stand out with a larger profile in
               the Desires app, but also on your smartphone. Only you as a VIP
               can choose from 2 different icons with a VIP logo.
             </Text>
           </Wrapper>
           <Spacer isSmall />
-          <Wrapper style={{height: responsiveHeight(58.5)}}>
+          <Wrapper style={{ height: responsiveHeight(58.5) }}>
             {IconVipData.map((item, index) => (
               <Options
                 key={index}
@@ -439,9 +484,12 @@ export default function Index() {
                 customleftIcon={appIcons.applogo}
                 leftIconColor={item?.leftIconColor}
                 leftColor={item?.leftColor}
-                leftIconSize={scale(20)}
+                leftIconSize={isTablet ? totalSize(2.4) : scale(20)}
                 description={item?.description}
                 rightText={item?.rightText}
+
+                // leftMainContainerSize={width(7)}
+                leftContainerStyle={{ ...(isTablet && { height: totalSize(4.8), width: totalSize(4.8) }) }}
               />
             ))}
           </Wrapper>
@@ -456,8 +504,8 @@ export default function Index() {
         disableSwipe
         visible={AppIconSealth}
         toggle={handleToggleIconSealth}
-        mainContainerStyle={{height: responsiveHeight(75)}}
-        containerStyle={{flex: 1}}>
+        mainContainerStyle={{ height: isTablet ? height(78) : responsiveHeight(75) }}
+        containerStyle={{ flex: 1 }}>
         <ScrollViews.KeyboardAvoiding>
           <Wrapper>
             <Labels.ModalLabelWithCross
@@ -467,7 +515,10 @@ export default function Index() {
           </Wrapper>
           <Spacer isSmall />
           <Wrapper marginHorizontalBase>
-            <Text isRegular isRegularFont>
+            <Text isRegular isRegularFont
+
+              style={{ ...(isTablet && { fontSize: totalSize(1.45) }) }}
+            >
               As a Phantom or Celebrity member you have the opportunity to
               disguise the Desires app. You can choose from 10 different topics.
               The app icon changes, as well as the app name. This means you can
@@ -479,24 +530,77 @@ export default function Index() {
             </Text>
           </Wrapper>
           <Spacer isSmall />
-          <Wrapper style={{height: responsiveHeight(58.5)}}>
+          <Wrapper style={{ height: responsiveHeight(58.5) }}>
             {IconSealthData.map((item, index) => (
               <Options
                 key={index}
                 title={item?.title}
                 leftColor={item?.leftColor}
                 //leftIconSize={scale(55)}
+                // leftIconSize={isTablet?totalSize(2.4):scale(20)}
                 description={item?.description}
                 rightText={item?.rightText}
+                // leftMainContainerSize={width(7)}
+                leftContainerStyle={{ ...(isTablet && { height: totalSize(4.8), width: totalSize(4.8) }) }}
               />
             ))}
           </Wrapper>
+          {isTablet && <Spacer height={height(8)} />}
           <Wrapper style={styles.buttonONtheBottom}>
             <Buttons.Colored text={'Reset'} />
             <Spacer isSmall />
           </Wrapper>
         </ScrollViews.KeyboardAvoiding>
       </Modals.PopupPrimary>
+
+
+
+
+      {/* absolute components act like modal open inCase of isTablet */}
+
+      {isTablet && <Wrapper isAbsolute style={{
+        ...(isTablet && {
+          flex: 1,
+          width: width(100),
+          height: height(100),
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          justifyContent: 'center'
+        })
+      }}>
+        <Wrapper style={{...styles.outerWrap }}>
+          <Spacer height={height(1)} />
+          <Wrapper style={{ ...styles.innerWrap }}>
+            <Text
+              isBoldFont
+              style={{ ...(isTablet && { fontSize: totalSize(3) }) }}
+            >
+              App - Settings
+            </Text>
+            <Icons.Back
+              color={colors.black}
+              iconName={'cross'}
+              iconType={'entypo'}
+              size={totalSize(3.5)}
+              onPress={() => navigation.goBack()}
+              style={{ alignSelf: 'flex-end' }}
+            />
+          </Wrapper>
+
+          <Spacer />
+          <AppSettingInfo
+            unitsData={unitsData}
+            handleToggleIconSealth={handleToggleIconSealth}
+            handleToggleIconVip={handleToggleIconVip}
+            handleToggleLocationModal={handleToggleLocationModal}
+            handleTogglePrivacyPolicyModal={handleTogglePrivacyPolicyModal}
+            handleToggleTermsConditionsModal={handleToggleTermsConditionsModal}
+            handleToggleAccessModal={handleToggleAccessModal}
+          />
+
+        </Wrapper>
+
+      </Wrapper>}
+
     </Wrapper>
   );
 }
@@ -505,10 +609,24 @@ const styles = StyleSheet.create({
   buttonONtheBottom: {
     flex: 1,
     position: 'absolute',
-    bottom: 0,
+    bottom: isTablet ? height(4) : 0,
     left: 0,
     right: 0,
     paddingVertical: sizes.smallMargin,
     marginVertical: sizes.smallMargin,
   },
+  outerWrap: {
+    width: width(90),
+    height: height(90),
+    borderRadius: totalSize(2),
+    backgroundColor: colors.appBgColor1,
+    alignSelf: 'center'
+  },
+  innerWrap: {
+    paddingHorizontal: width(4),
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }
 });

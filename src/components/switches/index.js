@@ -16,6 +16,10 @@ import {
 import {MyAnimated} from '..';
 import {PixelRatio, Pressable, Touchable, TouchableOpacity} from 'react-native';
 import {scale, verticalScale} from 'react-native-size-matters';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
+
+const isTablet=DeviceInfo.isTablet();
 
 export const Primary = ({value, onPress, tintColor}) => {
   const defaultTintColor =
@@ -138,10 +142,11 @@ export const Custom = ({}) => {
       <Wrapper
         justifyContentCenter
         style={{
-          height: responsiveHeight(3.3),
-          width: responsiveWidth(12),
+          height: isTablet?height(4):responsiveHeight(3.3),
+          width: isTablet?width(11.5):responsiveWidth(12),
           borderRadius: responsiveWidth(6),
           paddingHorizontal: responsiveWidth(0.5),
+          // paddingVertical:height(1)
         }}
         backgroundColor={SwitchOn ? colors.appBGColor : colors.appBorderColor2}>
         <MyAnimated.AnimatedView

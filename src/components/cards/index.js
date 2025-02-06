@@ -108,14 +108,21 @@ export function Profile({
   onPressHot,
   onPressNot,
   onPress,
+  cardStyle,
+  cardHeight,
+  cardWidth,
+  backgroundStyle
 }) {
   const styles = StyleSheet.create({
     backgroundLayer: {
       overflow: 'hidden',
     },
     BackgroundImageStyle: {
-      height: isTablet ?height(63.5): responsiveHeight(60),
-      width: isTablet ?width(68.5): responsiveWidth(90),
+      // height: isTablet ?height(63.5): responsiveHeight(60),
+      // width: isTablet ?width(68.5): responsiveWidth(90),
+
+      height: cardHeight?cardHeight:responsiveHeight(60),
+      width:  cardWidth?cardWidth: responsiveWidth(90),
       overflow: 'hidden',
       borderRadius: responsiveWidth(4.5),
       resizeMode: 'cover',
@@ -139,7 +146,7 @@ export function Profile({
     },
     LocationMainContainer: {
       position: 'absolute',
-      top: responsiveHeight(2),
+      top:isTablet?height(0): responsiveHeight(2),
       right: 5,
       borderRadius: responsiveWidth(2),
       backgroundColor: colors.cloud,
@@ -169,12 +176,12 @@ export function Profile({
             isGold && { borderColor: colors.GoldLabelBackground, borderWidth: 2 },
             isVip && { borderColor: colors.appPrimaryColor, borderWidth: 2 },
             isStandard && { borderWidth: 0 },
-          ]}>
+            cardStyle]}>
           <ImageBackground
             source={CardImage ? CardImage : appImages.image2}
             style={[
               styles.BackgroundImageStyle,
-              DeckSwiper && { height: verticalScale(420) },
+              DeckSwiper && { height: verticalScale(420) },backgroundStyle
             ]}>
             <LinearGradient
               colors={['rgba(34, 24, 49, 0)', 'rgba(27, 36, 49, 0.85)']} // Adjust the colors as needed
@@ -199,7 +206,7 @@ export function Profile({
                   style={{...(isTablet&&{fontSize:totalSize(1.6)})}}
                   isWhite children={'Las Vegas, NV'} />
                   <Spacer height={responsiveHeight(1.5)} />
-                  <Wrapper flexDirectionRow gap={responsiveWidth(2)}>
+                  <Wrapper flexDirectionRow gap={isTablet?width(0.5):responsiveWidth(2)}>
                     {['Soccer Group', 'Traveling'].map((item, index) => (
                       <Wrapper
                         key={index}

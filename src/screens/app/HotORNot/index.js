@@ -5,6 +5,10 @@ import Swiper from 'react-native-deck-swiper';
 import {appIcons, colors, responsiveWidth, sizes} from '../../../services';
 import {scale, verticalScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
+import {height,width,totalSize} from 'react-native-dimension'
+import DeviceInfo from 'react-native-device-info';
+
+const isTablet=DeviceInfo.isTablet();
 
 const SwiperComponent = React.memo(
   ({
@@ -106,6 +110,7 @@ export default function Index() {
 
   const renderCard = (card, cardIndex) => {
     return (
+      // <Wrapper style={{backgroundColor:'green',padding}}>
       <Cards.Profile
         DeckSwiper
         key={cardIndex} // Use a unique identifier from the card data
@@ -120,6 +125,7 @@ export default function Index() {
         }}
         CardSwipeToHot={currentCardIndex === cardIndex && SwipeTrun === 1}
       />
+      // </Wrapper>
     );
   };
 
@@ -136,7 +142,7 @@ export default function Index() {
         MainBackgroundColor={colors.appBgColor1}
       />
       {SwipeDeckData?.length >= 1 ? (
-        <Wrapper flex={1} isCenter>
+        <Wrapper flex={1} isCenter style={{alignItems:'center',justifyContent:'center'}}>
           <SwiperComponent
             swiperRef={swiperRef}
             SwipeDeckData={SwipeDeckData}

@@ -34,9 +34,12 @@ import {
 import {Card, Icon} from '@rneui/base';
 import {verticalScale} from 'react-native-size-matters';
 import {navigate} from '../../../navigation/rootNavigation';
-import { isTablet } from 'react-native-device-info';
+import DeviceInfo from 'react-native-device-info';
+import {height,width,totalSize} from 'react-native-dimension'
 
-const {height} = Dimensions.get('window'); // Get the screen height
+// const {height} = Dimensions.get('window'); // Get the screen height
+
+const isTablet=DeviceInfo.isTablet();
 
 export default function Home() {
   const {
@@ -90,6 +93,8 @@ export default function Home() {
                 isVip={item?.isVip}
                 isGold={item?.isGold}
                 isStandard={item?.isStandard}
+                cardHeight={isTablet&&height(63.5)}
+                cardWidth={isTablet&&width(68.5)}
                 onPress={() => {
                   navigate(routes.userProfile, {visiterProfile: true});
                 }}
@@ -149,6 +154,7 @@ export default function Home() {
             <Spacer isBasic />
             <Sliders.PrimarySlider
               SliderLabel={'Distance'}
+
               SliderValue={[40]}
               ValueLabel={'km'}
             />
@@ -159,7 +165,11 @@ export default function Home() {
               SliderValue={[20, 40]}
             />
 
-            <Labels.Normal Label={'Location'} />
+            <Labels.Normal Label={'Location'}
+               style={{
+                ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
+              }}
+            />
             <Spacer isBasic />
             <TextInputs.Bordered
               placeholder={'Chicago, USA'}
@@ -167,12 +177,18 @@ export default function Home() {
               iconTypeRight={'octicon'}
               iconSizeRight={responsiveWidth(5)}
               iconColorRight={colors.appPrimaryColor}
+              inputStyle={{
+                ...(isTablet && { fontSize: totalSize(1.4) }), // Applies only if isTablet is true
+              }}
               onPress={() => {}}
             />
-            <Spacer height={responsiveHeight(18)} />
+           {isTablet?<Spacer isBasic/>: <Spacer height={responsiveHeight(18)} />}
             <Buttons.Colored
               text={'Apply Filter'}
               onPress={FilterModalToggle}
+              textStyle={{
+                ...(isTablet && { fontSize: totalSize(2) }), // Applies only if isTablet is true
+              }}
             />
             <Spacer isBasic />
             <Text
