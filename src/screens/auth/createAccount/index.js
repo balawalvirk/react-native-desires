@@ -51,6 +51,21 @@ export default function Index(props) {
     smsAuthModal,
     smsAuthOTPModal,
     uploadImageModal,
+
+    // states
+    email,
+    setEmail,
+    emailError,
+    setEmailError,
+    password,
+    setPassword,
+    passwordError,
+    setPasswordError,
+    confirmPassword,
+    setConfirmPassword,
+    confirmPasswordError,
+    setConfirmPasswordError,
+
     //functions
     handleInputFocused,
     handleAccepted,
@@ -88,6 +103,8 @@ export default function Index(props) {
         <Spacer isMedium />
         <TextInputs.Bordered
           placeholder={'dean@dexxire.com'}
+          value={email}
+          onChangeText={(value) => (setEmail(value), setEmailError(''))}
           onFocus={value => value && handleInputFocused({ FocusedOn: 'Email' })}
           isFocusedContainerColor={InputFocused === 'Email' && colors.black}
           customIconRight={appIcons.Email}
@@ -101,6 +118,8 @@ export default function Index(props) {
         <TextInputs.Bordered
           placeholder={'Enter Password'}
           secureTextEntry={SecurePassword1}
+          value={password}
+          onChangeText={(value) => (setConfirmPassword(value), setPasswordError(''))}
           onFocus={value =>
             value && handleInputFocused({ FocusedOn: 'Password' })
           }
@@ -121,6 +140,8 @@ export default function Index(props) {
         <TextInputs.Bordered
           placeholder={'Renter password'}
           secureTextEntry={SecurePassword2}
+          value={confirmPassword}
+          onChangeText={(text) => (setConfirmPassword(text), setConfirmPasswordError(''))}
           onFocus={value =>
             value && handleInputFocused({ FocusedOn: 'Renter password' })
           }
@@ -145,9 +166,7 @@ export default function Index(props) {
           textStyle={{
             ...(isTablet && { fontSize: totalSize(2) }), // Applies only if isTablet is true
           }}
-          onPress={() => {
-            handleToggleSmsAuthModal();
-          }}
+          onPress={() => {handleToggleSmsAuthModal()}}
         />
         <Spacer isBasic />
         <Wrapper flexDirectionRow alignItemsCenter justifyContentCenter>
@@ -596,8 +615,8 @@ export default function Index(props) {
                   violate our guidelines will be deleted immediately.
                 </Text>
               </Wrapper>
-              {isTablet ? <Spacer isSmall /> :  <Spacer isDoubleBase />}
-             
+              {isTablet ? <Spacer isSmall /> : <Spacer isDoubleBase />}
+
               {/* upload image */}
               <UploadImage />
               <Spacer isMedium />
@@ -607,7 +626,7 @@ export default function Index(props) {
                 flexDirectionRow
                 alignItemsCenter
                 justifyContentSpaceBetween>
-                <Text style={{ width:isTablet?width(58): responsiveWidth(73) }}>
+                <Text style={{ width: isTablet ? width(58) : responsiveWidth(73) }}>
                   Do you want to remain invisible to others?{'\n'}The Ghose mode
                   is perfect for you
                 </Text>
@@ -744,11 +763,11 @@ const UploadImage = ({ }) => {
   const { image, openLibrary } = useImagePicker();
   return (
     <Wrapper>
-      <Labels.Normal Label={'Public Pictures'} 
-          style={{
-            ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
-          }}
-      
+      <Labels.Normal Label={'Public Pictures'}
+        style={{
+          ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
+        }}
+
       />
       <Spacer isSmall />
       <Wrapper
@@ -775,9 +794,9 @@ const UploadImage = ({ }) => {
         </Wrapper>
       </Wrapper>
       <Spacer isBasic />
-      <Labels.Normal Label={'Private Pictures'}   style={{
-            ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
-          }}/>
+      <Labels.Normal Label={'Private Pictures'} style={{
+        ...(isTablet && { fontSize: totalSize(1.6) }), // Applies only if isTablet is true
+      }} />
       <Spacer isSmall />
       <Wrapper
         marginHorizontalBase

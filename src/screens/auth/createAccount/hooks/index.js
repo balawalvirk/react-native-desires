@@ -1,7 +1,11 @@
-import {useMemo, useState} from 'react';
-import {appIcons, colors} from '../../../../services';
+import { useMemo, useState } from 'react';
+import { appIcons, colors, validateEmail, validatePassword } from '../../../../services';
+import { uniqueID } from '../../../../backend/utility';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 export function useHooks() {
+  const user_Redux = useSelector(state => state?.user_redux ?? {}, shallowEqual)
+  const dispatch = useDispatch()
   const [SecurePassword1, setSecurePassword1] = useState(true);
   const [SecurePassword2, setSecurePassword2] = useState(true);
   const [InputFocused, setInputFocused] = useState('');
@@ -12,7 +16,16 @@ export function useHooks() {
   const [smsAuthModal, setSmsAuthModal] = useState(false);
   const [smsAuthOTPModal, setSmsAuthOTPModal] = useState(false);
 
-  function handleInputFocused({FocusedOn}) {
+  // 
+  const [email, setEmail] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  function handleInputFocused({ FocusedOn }) {
     setInputFocused(FocusedOn);
   }
   function handleAccepted() {
@@ -34,7 +47,7 @@ export function useHooks() {
     setSmsAuthOTPModal(!smsAuthOTPModal);
   }
 
-  function handleSecurePassword({num}) {
+  function handleSecurePassword({ num }) {
     // Ensure num is a number and check if it is undefined or invalid
     if (num === undefined || num === '') {
       throw new Error('Need a Specific Number');
@@ -95,6 +108,40 @@ export function useHooks() {
     [],
   );
 
+
+  // validation
+  const validation = () => {
+    let required = 'Field value is required!'
+    !email ? setEmailError(required) : validateEmail(email) ? setEmailError('Please enter valid Email') : setEmailError('')
+    !password ? setPasswordError(required) : password?.trim().length < 6 ? setPasswordError('Password must be atleast 6 characters long!') : setPasswordError('')
+    !confirmPassword ? setConfirmPasswordError(required) : password.trim() !== confirmPassword.trim() ? setConfirmPasswordError('Password must match with confirm password') : setConfirmPasswordError('')
+
+    if (validateEmail(email) && password?.trim().length > 6 && password?.trim() == confirmPassword?.trim()) {
+      return true
+    } else {
+      return false
+    }
+
+  }
+
+  const handleSignUp = () => {
+    try {
+      if (validation) {
+
+        const payload = {
+          _id: uniqueID(),
+          email: email,
+          password: password,
+          confirmPassword: confirmPassword
+
+        }
+        handleToggleSmsAuthModal();
+      }
+    } catch (error) {
+      console.log('error: ' + error)
+    }
+  }
+
   return {
     InputFocused,
     SecurePassword1,
@@ -108,6 +155,20 @@ export function useHooks() {
     smsAuthModal,
     smsAuthOTPModal,
     uploadImageModal,
+    // 
+    email,
+    setEmail,
+    emailError,
+    setEmailError,
+    password,
+    setPassword,
+    passwordError,
+    setPasswordError,
+    confirmPassword,
+    setConfirmPassword,
+    confirmPasswordError,
+    setConfirmPasswordError,
+
     //functions
     handleInputFocused,
     handleAccepted,
@@ -118,5 +179,6 @@ export function useHooks() {
     handleToggleSmsAuthModal,
     handleToggleSmsAuthOTPModal,
     handleToggleUploadImageModal,
+    handleSignUp
   };
 }

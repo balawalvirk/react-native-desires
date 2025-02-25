@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475307765818",
+    "project_id": "react-js-desires",
+    "storage_bucket": "react-js-desires.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475307765818:android:37cfa522aa6f621d8e8503",
+        "android_client_info": {
+          "package_name": "com.desires"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3q1B4dl-WB3Yz12o9jJ1kFshZHE4I9nY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

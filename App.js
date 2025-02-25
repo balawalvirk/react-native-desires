@@ -1,10 +1,11 @@
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/navigation';
-import {Provider} from 'react-redux';
-import store from './src/store';
+// import store from './src/store';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {MenuProvider} from 'react-native-popup-menu';
+import store from './src/redux';
+import { Provider } from 'react-redux';
 export default function App() {
   return (
     <MenuProvider>
